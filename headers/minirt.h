@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 17:33:39 by daprovin          #+#    #+#             */
-/*   Updated: 2020/01/29 18:59:01 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/01/31 18:58:03 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -118,7 +118,7 @@ typedef struct	s_data
 
 int				ft_strstrlen(char **str);
 double			ft_doubatoi(char *str);
-int		ft_checkdoub(char *str);
-int		ft_checkargs(char *str);
+int				ft_checkdoub(char *str);
+int				ft_checkargs(char *str);
 
 #endif

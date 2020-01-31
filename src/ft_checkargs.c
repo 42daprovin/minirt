@@ -1,29 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_checkdoub.c                                     :+:      :+:    :+:   */
+/*   ft_checkargs.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/29 18:34:05 by daprovin          #+#    #+#             */
-/*   Updated: 2020/01/29 18:39:55 by daprovin         ###   ########.fr       */
+/*   Created: 2020/01/29 18:54:26 by daprovin          #+#    #+#             */
+/*   Updated: 2020/01/30 15:58:17 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "headers/libft.h"
+#include "../headers/libft.h"
+#include "../headers/minirt.h"
 
-int		ft_checkdoub(char *str)
+int		ft_checkargs(char *str)
 {
-	int		i;
+	char	**split;
+	int		r;
 
-	i = 0;
-	while (*(str + i))
+	if (!(split = ft_split(str, ',')))
+		return (2);
+	if (ft_strstrlen(split) != 3)
 	{
-		if (*(str + i) == '.' && i == 0)
-			return (1);
-		if (*(str + i) == '.' && *(str + i + 1) == '\0')
-			return (1);
-		i++;
+		free(split);
+		return (1);
 	}
-	return (0);
+	if (ft_checkdoub(split[0]) || ft_checkdoub(split[1])
+	|| ft_checkdoub(split[2]))
+		r = 1;
+	else
+		r = 0;
+	free(split);
+	return (r);
 }

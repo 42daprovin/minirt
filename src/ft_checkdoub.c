@@ -1,23 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strstrlen.c                                     :+:      :+:    :+:   */
+/*   ft_checkdoub.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2020/01/29 16:43:03 by daprovin          #+#    #+#             */
-/*   Updated: 2020/01/29 17:01:47 by daprovin         ###   ########.fr       */
+/*   Created: 2020/01/29 18:34:05 by daprovin          #+#    #+#             */
+/*   Updated: 2020/01/30 15:33:25 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "headers/libft.h"
+#include "../headers/libft.h"
 
-int		ft_strstrlen(char **str)
+int		ft_checkdoub(char *str)
 {
-	int		l;
+	int		i;
 
-	l = 0;
-	while (str[l])
-		l++;
-	return (l);
+	i = 0;
+	while (*(str + i))
+	{
+		if (*(str + i) == '.' && i == 0)
+			return (1);
+		if (*(str + i) == '.' && *(str + i + 1) == '\0')
+			return (1);
+		i++;
+	}
+	return (0);
 }

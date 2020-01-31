@@ -6,11 +6,11 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 15:37:49 by daprovin          #+#    #+#             */
-/*   Updated: 2020/01/29 17:01:48 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/01/30 15:54:48 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "headers/libft.h"
+#include "../headers/libft.h"
 #include <math.h>
 
 double	ft_doubatoi(char *str)
@@ -22,7 +22,7 @@ double	ft_doubatoi(char *str)
 
 	if (ft_isinstr('.', str))
 	{
-		split = ft_split(str, '.');
+		split = ft_split(str, '.');//seguridad
 		r = ft_atoi(split[1]);
 		i = 1;
 		n = r;
