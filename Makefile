@@ -6,7 +6,7 @@
 #    By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/30 15:35:32 by daprovin          #+#    #+#              #
-#    Updated: 2020/01/30 16:40:41 by daprovin         ###   ########.fr        #
+#    Updated: 2020/02/07 16:20:55 by daprovin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -18,6 +18,10 @@ OBJS := \
 	src/ft_checkdoub.o \
 	src/ft_doubatoi.o \
 	src/ft_strstrlen.o \
+	src/ft_parsutilslst.o \
+	src/ft_parsutils.o \
+	src/ft_parsobjs.o \
+	src/ft_parsnobjs.o \
 
 GFLAGS := -Wall -Werror -Wextra
 HEAD := headers/

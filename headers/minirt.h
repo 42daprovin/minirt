@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 17:33:39 by daprovin          #+#    #+#             */
-/*   Updated: 2020/01/31 18:58:03 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/07 16:19:23 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -120,5 +120,20 @@ int				ft_strstrlen(char **str);
 double			ft_doubatoi(char *str);
 int				ft_checkdoub(char *str);
 int				ft_checkargs(char *str);
+int				ft_pl(char **spl, t_data *data);
+int				ft_sp(char **ssp, t_data *data);
+int				ft_sq(char **ssq, t_data *data);
+int				ft_cy(char **scy, t_data *data);
+int				ft_tr(char **str, t_data *data);
+int				ft_reso(char **split, t_data *data);
+int				ft_algt(char **split, t_data *data);
+int				ft_cam(char **split, t_data *data);
+int				ft_lgt(char **split, t_data *data);
+void			ft_addbackcam(t_cam **dcam, t_cam *cam);
+void			ft_addbacklgt(t_lgt **dlgt, t_lgt *lgt);
+void			ft_addbackobj(t_obj **dobj, t_obj *obj);
+int				ft_fpt(char *spl, t_pt *pt);
+int				ft_fvct(char *spl, t_vct *n);
+int				ft_fclr(char *spl, int (*clr)[3]);
 
 #endif
