@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 17:33:39 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/07 16:19:23 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/07 18:20:02 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,12 @@ typedef struct	s_res
 	int				x;
 	int				y;
 }				t_res;
+
+typedef struct	s_ray
+{
+	t_pt			pt;
+	t_vct			vct;
+}				t_ray;
 
 typedef struct	s_cam
 {

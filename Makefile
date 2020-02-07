@@ -6,7 +6,7 @@
 #    By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/30 15:35:32 by daprovin          #+#    #+#              #
-#    Updated: 2020/02/07 16:20:55 by daprovin         ###   ########.fr        #
+#    Updated: 2020/02/07 19:36:08 by daprovin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ HEAD := headers/
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	gcc -o $(NAME) $(OBJS) src/libft.a
+	gcc -o $(NAME) $(OBJS) src/libft.a libmlx.dylib
 
 %.o: %.c
 	gcc -I $(HEAD) -c $< -o $@

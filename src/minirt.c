@@ -6,13 +6,14 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 18:55:58 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/07 16:24:16 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/07 19:37:47 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/libft.h"
 #include "../headers/minirt.h"
 #include "../headers/mlx.h"
+#include <math.h>
 
 static int	ft_slcdata1(char **split, t_data *data)
 {
@@ -79,13 +80,54 @@ static void	ft_initdata(t_data *data)
 	data->algt = NULL;
 }
 
+int			ft_camrays(double x, double y, t_data *data)
+{
+	t_pt	pt;
+	double	norm;
+	t_ray	ray;
+
+	pt.x = ((2 * ((x + 0.5) / (data->res->x))) - 1)
+	* ((data->res->x) / (data->res->y))
+	* tan(((data->cam->fov) * (M_PI / 180)) / 2);
+	pt.y = (1 - (2 * ((y + 0.5) / (data->res->y))))
+	* tan(((data->cam->fov) * (M_PI / 180)) / 2);
+	norm = sqrt(pow(pt.x, 2) + pow(pt.y, 2) + 1);
+	ray.vct.a = (pt.x / norm);
+	ray.vct.b = (pt.y / norm);
+	ray.vct.c = (-1 / norm);
+	ray.pt.x = 0;
+	ray.pt.y = 0;
+	ray.pt.z = 0;
+	return (0);
+}
+
+int			ft_minirt(t_data *data, void *mlx_ptr, void *win_ptr)
+{
+	double	x;
+	double	y;
+
+	x = 0;
+	y = 0;
+	while (x < data->res->x)
+	{
+		while (y < data->res->y)
+		{
+			ft_camrays(x, y, data);
+
+			y++;
+		}
+		x++;
+	}
+	return (0);
+}
+
 int			main(int ac, char **av)
 {
-	int		e;
 	int		fd;
+	void	*mlx_ptr;
+	void	*win_ptr;
 	char	*line;
 	t_data	data;
-	t_obj	*obj;
 
 	ft_initdata(&data);
 	fd = open(av[1], O_RDONLY);
@@ -95,12 +137,9 @@ int			main(int ac, char **av)
 		{}//error
 		free(line);
 	}
-	obj = data.obj;
-	while (obj)
-	{
-		if (obj->id == SP)
-			printf("%g", ((t_sp*)(obj->fig))->d);
-		obj = obj->next;
-	}
+	mlx_ptr = mlx_init();
+	win_ptr = mlx_new_window(mlx_ptr, data.res->x, data.res->y, "miniRT");
+	ft_minirt(&data, mlx_ptr, win_ptr);
+	mlx_loop(mlx_ptr);
 	return (0);
 }
