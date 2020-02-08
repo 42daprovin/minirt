@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/15 17:20:51 by daprovin          #+#    #+#             */
-/*   Updated: 2020/01/22 17:28:41 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/08 17:42:22 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int main()
 	y = 20;
 	while (y < 480)
 	{
+		//printf("%d", 1);
 		mlx_pixel_put(mlx_ptr, win_ptr, x, y, 16711680);
 		mlx_pixel_put(mlx_ptr, win_ptr, x + 1, y, 16711680);
 		y++;

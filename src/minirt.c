@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 18:55:58 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/07 19:37:47 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/08 19:39:57 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,14 +80,14 @@ static void	ft_initdata(t_data *data)
 	data->algt = NULL;
 }
 
-int			ft_camrays(double x, double y, t_data *data)
+t_ray		ft_camrays(double x, double y, t_data *data)
 {
 	t_pt	pt;
 	double	norm;
 	t_ray	ray;
 
 	pt.x = ((2 * ((x + 0.5) / (data->res->x))) - 1)
-	* ((data->res->x) / (data->res->y))
+	//* ((data->res->x) / (data->res->y))
 	* tan(((data->cam->fov) * (M_PI / 180)) / 2);
 	pt.y = (1 - (2 * ((y + 0.5) / (data->res->y))))
 	* tan(((data->cam->fov) * (M_PI / 180)) / 2);
@@ -98,26 +98,81 @@ int			ft_camrays(double x, double y, t_data *data)
 	ray.pt.x = 0;
 	ray.pt.y = 0;
 	ray.pt.z = 0;
-	return (0);
+	return (ray);
+}
+int			ft_intersp(t_data data, t_ray ray, int *clr, t_pt *intpt)
+{
+	t_vct	h_vc;
+	double	h;
+	double	t_co;
+	double	d;
+
+	h_vc.a = ((t_sp*)data.obj->fig)->c.x - data.cam->o.x;
+	h_vc.b = ((t_sp*)data.obj->fig)->c.y - data.cam->o.y;
+	h_vc.c = ((t_sp*)data.obj->fig)->c.z - data.cam->o.z;
+	h = sqrt(pow(h_vc.a, 2) + pow(h_vc.b, 2) + pow(h_vc.c, 2));
+	t_co = (ray.vct.a * h_vc.a) + (ray.vct.b * h_vc.b) + (ray.vct.c * h_vc.c);
+	if (t_co < 0)
+		return (0);
+	d = sqrt(pow(h, 2) - pow(t_co, 2));
+	if (d < 0 || d > (((t_sp*)data.obj->fig)->d) / 2)
+		return (0);
+	return (1);
+}
+
+int			ft_intersect(t_ray ray, t_data *data, int *clr)
+{
+	t_data	ndata;
+	t_pt	intpt;
+	int		r;
+
+	r = 0;
+	intpt = data->cam->o;
+	ndata = *data;
+	while (ndata.obj)
+	{
+		if (ndata.obj->id == SP)
+			r = ft_intersp(ndata, ray, clr, &intpt);
+		else if (ndata.obj->id == PL)
+		{}
+		else if (ndata.obj->id == SQ)
+		{}
+		else if (ndata.obj->id == CY)
+		{}
+		else if (ndata.obj->id == TR)
+		{}
+		ndata.obj = ndata.obj->next;
+	}
+	return (r);
 }
 
 int			ft_minirt(t_data *data, void *mlx_ptr, void *win_ptr)
 {
 	double	x;
 	double	y;
+	t_ray	ray;
+	int		clr;
 
 	x = 0;
 	y = 0;
 	while (x < data->res->x)
 	{
+		y = 0;
 		while (y < data->res->y)
 		{
-			ft_camrays(x, y, data);
-
+			ray = ft_camrays(x, y, data);
+			if (ft_intersect(ray, data, &clr))
+				mlx_pixel_put(mlx_ptr, win_ptr, x, y, 16711680);
 			y++;
 		}
 		x++;
 	}
+	return (0);
+}
+
+int			ft_close(void)
+{
+	exit(1);
 	return (0);
 }
 
@@ -140,6 +195,7 @@ int			main(int ac, char **av)
 	mlx_ptr = mlx_init();
 	win_ptr = mlx_new_window(mlx_ptr, data.res->x, data.res->y, "miniRT");
 	ft_minirt(&data, mlx_ptr, win_ptr);
+	mlx_hook(win_ptr, 17, 0, ft_close, (void *)0);
 	mlx_loop(mlx_ptr);
 	return (0);
 }
