@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 18:55:58 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/08 19:39:57 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/10 19:12:06 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,64 @@ static void	ft_initdata(t_data *data)
 	data->algt = NULL;
 }
 
+t_ray		ft_rotx(t_ray ray, t_data *data, double ct)
+{
+	t_ray	rayx;
+
+	if (data->cam->n.b >= 0)
+	{
+		rayx.vct.a = ray.vct.a;
+		rayx.vct.b = (ct * ray.vct.b) - (sin(acos(ct)) * ray.vct.c);
+		rayx.vct.c = (sin(acos(ct)) * ray.vct.b) + (ct * ray.vct.c);
+	}
+	else
+	{
+		rayx.vct.a = ray.vct.a;
+		rayx.vct.b = (ct * ray.vct.b) + (sin(acos(ct)) * ray.vct.c);
+		rayx.vct.c = (ct * ray.vct.c) - (sin(acos(ct)) * ray.vct.b);
+	}
+	return (rayx);
+}
+
+t_ray		ft_roty(t_ray ray, t_data *data, double ca)
+{
+	t_ray	rray;
+
+	if (data->cam->n.a >= 0)
+	{
+		rray.vct.a = (ca * ray.vct.a) + (sin(acos(ca)) * ray.vct.c);
+		rray.vct.b = ray.vct.b;
+		rray.vct.c = (ca * ray.vct.c) - (sin(acos(ca)) * ray.vct.a);
+	}
+	else
+	{
+		rray.vct.a = (ca * ray.vct.a) - (sin(acos(ca)) * ray.vct.c);
+		rray.vct.b = ray.vct.b;
+		rray.vct.c = (ca * ray.vct.c) + (sin(acos(ca)) * ray.vct.a);
+	}
+	return (rray);
+}
+t_ray		ft_rotray(t_ray ray, t_data *data)
+{
+	double	ct;
+	double	ca;
+	t_vct	cvct;
+	double	nproy;
+	t_ray	rray;
+
+	cvct = data->cam->n;
+	nproy = sqrt(pow(cvct.b, 2) + pow(cvct.c, 2));
+	ct = (cvct.c * (-1)) / nproy;
+	ca = (pow(cvct.b, 2) + pow(cvct.c, 2)) / nproy;
+	rray = ft_rotx(ray, data, ct);
+	rray = ft_roty(rray, data, ca);
+	rray.pt.x = data->cam->o.x;
+	rray.pt.y = data->cam->o.y;
+	rray.pt.z = data->cam->o.z;
+	return (rray);
+}
+
+
 t_ray		ft_camrays(double x, double y, t_data *data)
 {
 	t_pt	pt;
@@ -87,7 +145,7 @@ t_ray		ft_camrays(double x, double y, t_data *data)
 	t_ray	ray;
 
 	pt.x = ((2 * ((x + 0.5) / (data->res->x))) - 1)
-	//* ((data->res->x) / (data->res->y))
+	* ((data->res->x) / (data->res->y))
 	* tan(((data->cam->fov) * (M_PI / 180)) / 2);
 	pt.y = (1 - (2 * ((y + 0.5) / (data->res->y))))
 	* tan(((data->cam->fov) * (M_PI / 180)) / 2);
@@ -98,11 +156,14 @@ t_ray		ft_camrays(double x, double y, t_data *data)
 	ray.pt.x = 0;
 	ray.pt.y = 0;
 	ray.pt.z = 0;
+	ray = ft_rotray(ray, data);
 	return (ray);
 }
+
 int			ft_intersp(t_data data, t_ray ray, int *clr, t_pt *intpt)
 {
 	t_vct	h_vc;
+	t_pt	ipt;
 	double	h;
 	double	t_co;
 	double	d;
@@ -117,6 +178,10 @@ int			ft_intersp(t_data data, t_ray ray, int *clr, t_pt *intpt)
 	d = sqrt(pow(h, 2) - pow(t_co, 2));
 	if (d < 0 || d > (((t_sp*)data.obj->fig)->d) / 2)
 		return (0);
+	h = t_co - sqrt(pow(((t_sp*)data.obj->fig)->d / 2, 2) - pow(d, 2));
+	ipt.x = data.cam->o.x + (h * ray.vct.a);
+	ipt.y = data.cam->o.y + (h * ray.vct.b);
+	ipt.z = data.cam->o.z + (h * ray.vct.c);
 	return (1);
 }
 
@@ -155,6 +220,7 @@ int			ft_minirt(t_data *data, void *mlx_ptr, void *win_ptr)
 
 	x = 0;
 	y = 0;
+	clr = 0;
 	while (x < data->res->x)
 	{
 		y = 0;
@@ -192,6 +258,7 @@ int			main(int ac, char **av)
 		{}//error
 		free(line);
 	}
+	printf("%g", data.cam->n.b);
 	mlx_ptr = mlx_init();
 	win_ptr = mlx_new_window(mlx_ptr, data.res->x, data.res->y, "miniRT");
 	ft_minirt(&data, mlx_ptr, win_ptr);

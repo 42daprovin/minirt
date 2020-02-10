@@ -6,7 +6,7 @@
 /*   By: daprovin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/08 12:13:42 by daprovin          #+#    #+#             */
-/*   Updated: 2020/01/20 23:41:46 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/10 18:47:14 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ size_t			ft_strlcat(char *dst, const char *src, size_t dstsize);
 char			*ft_strchr(const char *s, int c);
 char			*ft_strrchr(const char *s, int c);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
-int				ft_atoi(const char *str);
+long			ft_atoi(const char *str);
 int				ft_isdigit(int c);
 int				ft_isspace(char c);
 char			*ft_strnstr(const char *haystack, const char *needle, size_t n);
