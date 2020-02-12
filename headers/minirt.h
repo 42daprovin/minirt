@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 17:33:39 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/10 14:22:53 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/11 23:00:41 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,6 +121,12 @@ typedef struct	s_data
 	t_res			*res;
 	t_algt			*algt;
 }				t_data;
+
+typedef struct	s_h
+{
+	int				r;
+	t_vct			n;
+}				t_h;//esto es de prueba
 
 int				ft_strstrlen(char **str);
 double			ft_doubatoi(char *str);

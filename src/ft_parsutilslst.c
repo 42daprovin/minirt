@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 16:12:16 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/07 16:14:06 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/12 01:41:45 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ void		ft_addbackcam(t_cam **dcam, t_cam *cam)
 	while (list->next)
 		list = list->next;
 	list->next = cam;
-	list->next->next = NULL;
+	//list->next->next = NULL;
 }
 
 void		ft_addbacklgt(t_lgt **dlgt, t_lgt *lgt)

@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 15:57:35 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/07 16:11:29 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/12 01:41:36 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ int			ft_lgt(char **split, t_data *data)
 	(lgt->clr)[2] = ft_atoi(fill[2]);
 	free(fill);
 	lgt->br = ft_doubatoi(split[2]);
+	lgt->next = NULL;//cambios
 	ft_addbacklgt(&(data->lgt), lgt);
 	return (0);
 }
