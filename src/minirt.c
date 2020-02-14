@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 18:55:58 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/12 06:42:30 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/14 19:14:02 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ static void	ft_initdata(t_data *data)
 	data->res = NULL;
 	data->algt = NULL;
 }
-
+/*
 t_ray		ft_rotx(t_ray ray, t_data *data, double ct)
 {
 	t_ray	rayx;
@@ -117,6 +117,7 @@ t_ray		ft_roty(t_ray ray, t_data *data, double ca)
 	}
 	return (rray);
 }
+
 t_ray		ft_rotray(t_ray ray, t_data *data)
 {
 	double	ct;
@@ -136,7 +137,6 @@ t_ray		ft_rotray(t_ray ray, t_data *data)
 	rray.pt.z = data->cam->o.z;
 	return (rray);
 }
-
 
 t_ray		ft_camrays(double x, double y, t_data *data)
 {
@@ -160,24 +160,16 @@ t_ray		ft_camrays(double x, double y, t_data *data)
 	return (ray);
 }
 
-int			ft_makecolor(int clr[3], t_data data)
-{
-	int		n;
-
-/*	n = ((int)(clr[0] * data.algt->clr[0] * data.algt->br / 255) << 16)
-	| ((int)(clr[1] * data.algt->clr[1] * data.algt->br / 255) << 8)
-	| (int)(clr[2] * data.algt->clr[2] * data.algt->br / 255); */
-	n = (clr[0] << 16) | (clr[1] << 8) | clr[2];
-	return (n);
-}
-
 t_vct		ft_setclrsp(t_data data, int *clr, t_pt intpt)
 {
 	double	n;
 	t_vct	vn;
+	int		clro[3];
 
-
-	*clr = ft_makecolor(((t_sp*)data.obj->fig)->clr, data);
+	clro[0] = ((t_sp*)data.obj->fig)->clr[0];
+	clro[1] = ((t_sp*)data.obj->fig)->clr[1];
+	clro[2] = ((t_sp*)data.obj->fig)->clr[2];
+	*clr = (clro[0] << 16) | (clro[1] << 8) | clro[2];
 	vn.a = intpt.x - ((t_sp*)data.obj->fig)->c.x;
 	vn.b = intpt.y - ((t_sp*)data.obj->fig)->c.y;
 	vn.c = intpt.z - ((t_sp*)data.obj->fig)->c.z;
@@ -213,7 +205,6 @@ int			ft_intersp2(double *h, t_data data, t_ray ray, double *t_co)
 
 t_h			ft_intersp(t_data data, t_ray ray, int *clr, t_pt *intpt)
 {
-//	t_vct	h_vc;
 	t_pt	ipt;
 	double	h;
 	double	t_co;
@@ -324,28 +315,6 @@ int			ft_interlgt(t_pt lgto, t_ray lr, t_data *data)
 	return (r);
 }
 
-void		ft_3dcolor(t_vct lv, t_vct n, int *clr, t_data data)
-{
-	double	lang;
-	double	cf;
-	int		clrp[3];
-	int		c;
-
-	lang = (lv.a * n.a) + (lv.b * n.b) + (lv.c * n.c);
-	c = *clr;
-	clrp[0] = *clr >> 16;
-	*clr = c;
-	clrp[1] = (*clr & 65280) >> 8;
-	*clr = c;
-	clrp[2] = *clr & 255;
-	cf = (data.algt->br + (data.lgt->br * fmax(lang, 0)) > 1) ? 1
-	: data.algt->br + (data.lgt->br * fmax(lang, 0));
-	*clr = ((int)(clrp[0] * cf) << 16) | ((int)(clrp[1] * cf) << 8)
-	| (int)(clrp[2] * cf);
-
-	return ;
-}
-
 void		ft_3dshadow(int *clr, double cf)
 {
 	int		clrp[3];
@@ -361,12 +330,25 @@ void		ft_3dshadow(int *clr, double cf)
 	| (int)(clrp[2] * cf);
 }
 
+double		ft_changecf(double cf, t_vct lv, t_vct n, t_data data)
+{
+	double	lang;
+	double	ncf;
+
+	lang = (lv.a * n.a) + (lv.b * n.b) + (lv.c * n.c);
+	ncf = (cf + (data.lgt->br * fmax(lang, 0)) > 1) ? 1
+	: cf + (data.lgt->br * fmax(lang, 0));
+	return (ncf);
+}
+
 void		ft_shadding(int *clr, t_vct n, t_pt ip, t_data *data)
 {
 	t_data	ndata;
 	t_ray	lr;
 	double	norm;
+	double	cf;
 
+	cf = data->algt->br;
 	lr.pt = ip;
 	ndata = *data;
 	while (ndata.lgt)
@@ -377,11 +359,10 @@ void		ft_shadding(int *clr, t_vct n, t_pt ip, t_data *data)
 		lr.vct.b = (ndata.lgt->o.y - ip.y) / norm;
 		lr.vct.c = (ndata.lgt->o.z - ip.z) / norm;
 		if (!(ft_interlgt(ndata.lgt->o, lr, data)))
-			ft_3dcolor(lr.vct, n, clr, ndata);
-		else
-			ft_3dshadow(clr, ndata.algt->br);
+			cf = ft_changecf(cf, lr.vct, n, ndata);
 		ndata.lgt = ndata.lgt->next;
 	}
+	ft_3dshadow(clr, cf);
 	return ;
 }
 
@@ -393,22 +374,11 @@ int			ft_intersect(t_ray ray, t_data *data, int *clr)
 	t_h		h;
 	t_h		h_p;
 
-//	r = 0;
 	h.r = 0;
 	intpt = data->cam->o;
 	ndata = *data;
 	while (ndata.obj)
 	{
-/*		if (ndata.obj->id == SP)
-			r = fmax(ft_intersp(ndata, ray, clr, &intpt), r);
-		else if (ndata.obj->id == PL)
-		{}
-		else if (ndata.obj->id == SQ)
-		{}
-		else if (ndata.obj->id == CY)
-		{}
-		else if (ndata.obj->id == TR)
-		{}*/
 		h_p = ft_objtype(ndata, ray, clr, &intpt);
 		h.r = fmax(h_p.r, h.r);
 		h.n = h_p.n;
@@ -449,7 +419,7 @@ int			ft_close(void)
 	exit(1);
 	return (0);
 }
-
+*/
 int			main(int ac, char **av)
 {
 	int		fd;
@@ -466,7 +436,6 @@ int			main(int ac, char **av)
 		{}//error
 		free(line);
 	}
-	data.cam = data.cam->next;
 	mlx_ptr = mlx_init();
 	win_ptr = mlx_new_window(mlx_ptr, data.res->x, data.res->y, "miniRT");
 	ft_minirt(&data, mlx_ptr, win_ptr);

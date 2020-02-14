@@ -6,7 +6,7 @@
 #    By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/30 15:35:32 by daprovin          #+#    #+#              #
-#    Updated: 2020/02/07 19:36:08 by daprovin         ###   ########.fr        #
+#    Updated: 2020/02/14 10:30:52 by daprovin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,6 +22,12 @@ OBJS := \
 	src/ft_parsutils.o \
 	src/ft_parsobjs.o \
 	src/ft_parsnobjs.o \
+	src/ft_camera.o \
+	src/ft_lights.o \
+	src/ft_rtstruct.o \
+	src/ft_rtutils.o \
+	src/sphere.o \
+	src/plane.o \
 
 GFLAGS := -Wall -Werror -Wextra
 HEAD := headers/
