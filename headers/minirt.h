@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 17:33:39 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/14 16:48:38 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/18 11:49:32 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@
 # define SQ 3
 # define CY 4
 # define TR 5
+# define E 1e-13
 
 typedef struct	s_pt
 {
@@ -51,6 +52,7 @@ typedef struct	s_cam
 	t_vct			n;
 	double			fov;
 	struct s_cam	*next;
+	struct s_cam	*back;
 }				t_cam;
 
 typedef	struct	s_algt
@@ -120,6 +122,8 @@ typedef struct	s_data
 	t_cam			*cam;
 	t_res			*res;
 	t_algt			*algt;
+	void			*w_ptr;
+	void			*mlx;
 }				t_data;
 
 typedef struct	s_h
@@ -155,7 +159,7 @@ t_ray			ft_rotray(t_ray ray, t_data *data);
 t_ray			ft_camrays(double x, double y, t_data *data);
 t_h				ft_objtype(t_data ndata, t_ray ray, int *clr, t_pt *intpt);
 int				ft_intersect(t_ray ray, t_data *data, int *clr);
-int				ft_minirt(t_data *data, void *mlx_ptr, void *win_ptr);
+int				ft_minirt(t_data *data);
 int				ft_interlgt(t_pt lgto, t_ray lr, t_data *data);
 void			ft_3dshadow(int *clr, double cf);
 double			ft_changecf(double cf, t_vct lv, t_vct n, t_data data);
@@ -167,6 +171,7 @@ t_h				ft_intersp(t_data data, t_ray ray, int *clr, t_pt *intpt);
 int				ft_interlgtsp(t_sp *sp, t_ray lr, t_pt lgto);
 t_h				ft_interpl(t_data data, t_ray ray, int *clr, t_pt *intpt);
 t_vct			ft_setclrpl(t_data data, int *clr, t_pt ipt);
-int				ft_interlgtpl(t_pl pl, t_ray lr, t_pt lgto);
+int				ft_interlgtpl(t_pl *pl, t_ray lr, t_pt lgto);
+int				ft_changecam(int key, t_data *data);
 
 #endif

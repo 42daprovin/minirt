@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 08:52:47 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/14 12:22:37 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/18 08:56:42 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int			ft_intersect(t_ray ray, t_data *data, int *clr)
 	return (h.r);
 }
 
-int			ft_minirt(t_data *data, void *mlx_ptr, void *win_ptr)
+int			ft_minirt(t_data *data)
 {
 	double	x;
 	double	y;
@@ -77,7 +77,7 @@ int			ft_minirt(t_data *data, void *mlx_ptr, void *win_ptr)
 		{
 			ray = ft_camrays(x, y, data);
 			if (ft_intersect(ray, data, &clr))
-				mlx_pixel_put(mlx_ptr, win_ptr, x, y, clr);
+				mlx_pixel_put(data->mlx, data->w_ptr, x, y, clr);
 			y++;
 		}
 		x++;

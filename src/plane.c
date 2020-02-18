@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 09:30:49 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/14 20:29:46 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/18 11:50:57 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "../headers/mlx.h"
 #include <math.h>
 
-t_vct		ft_setclrpl(t_data data, int *clr, t_pt ipt)
+t_vct			ft_setclrpl(t_data data, int *clr, t_pt ipt)
 {
 	int		clro[3];
 	t_vct	ivct;
@@ -27,8 +27,8 @@ t_vct		ft_setclrpl(t_data data, int *clr, t_pt ipt)
 	clro[2] = ((t_pl*)data.obj->fig)->clr[2];
 	*clr = (clro[0] << 16) | (clro[1] << 8) | clro[2];
 	ivct.a = data.cam->o.x - ipt.x;
-	ivct.b = data.cam->o.x - ipt.y;
-	ivct.c = data.cam->o.x - ipt.z;
+	ivct.b = data.cam->o.y - ipt.y;
+	ivct.c = data.cam->o.z - ipt.z;
 	n = ((t_pl*)data.obj->fig)->n;
 	if (ivct.a * n.a + ivct.b * n.b + ivct.c * n.c < 0)
 	{
@@ -39,24 +39,34 @@ t_vct		ft_setclrpl(t_data data, int *clr, t_pt ipt)
 	return (n);
 }
 
-t_h			ft_interpl(t_data data, t_ray ray, int *clr, t_pt *intpt)
+double			ft_interpl2(t_data data, t_ray ray)
 {
-	double	cs;
-	t_h		hh;
-	double	t;
-	double	d;
 	t_pl	pl;
-	t_pt	ipt;
+	double	d;
+	double	cs;
+	double	t;
 
-	hh.r = 0;
 	pl = *((t_pl*)data.obj->fig);
 	cs = (ray.vct.a * pl.n.a) + (ray.vct.b * pl.n.b) + (ray.vct.c * pl.n.c);
 	if (cs == 0)
-		return (hh);
+		return (cs);
 	d =  (-1) * pl.n.a * pl.pt.x - pl.n.b * pl.pt.y - pl.n.c * pl.pt.z;
 	t = (-d - pl.n.a * ray.pt.x - pl.n.b *ray.pt.y - pl.n.c * ray.pt.z)
 	/ (pl.n.a * ray.vct.a + pl.n.b * ray.vct.b + pl.n.c * ray.vct.c);
 	if (t < 0)
+		return (t);
+	return (t);
+}
+
+t_h					ft_interpl(t_data data, t_ray ray, int *clr, t_pt *intpt)
+{
+	t_h		hh;
+	double	t;
+	t_pt	ipt;
+
+	hh.r = 0;
+	t = ft_interpl2(data,ray);
+	if (t <= 0)
 		return (hh);
 	ipt.x = ray.pt.x + t * ray.vct.a;
 	ipt.y = ray.pt.y + t * ray.vct.b;
@@ -70,26 +80,40 @@ t_h			ft_interpl(t_data data, t_ray ray, int *clr, t_pt *intpt)
 	}
 	return (hh);
 }
-
-int			ft_interlgtpl(t_pl pl, t_ray lr, t_pt lgto)//cambiar entera copiando el
-                                                       //metodo de arriba
+static int			ft_sameplane(t_pl *pl, t_ray lr)
 {
-	double	ang;
+	t_vct	v;
+	double	cs;
+
+	v.a = lr.pt.x - pl->pt.x;
+	v.b = lr.pt.y - pl->pt.y;
+	v.c = lr.pt.z - pl->pt.z;
+	cs = v.a * pl->n.a + v.b * pl->n.b + v.c * pl->n.c;
+	if (cs < E)
+		return (1);
+	return (0);
+}
+
+int					ft_interlgtpl(t_pl *pl, t_ray lr, t_pt lgto)
+{
+	double	cs;
 	double	d;
 	t_pt	ipt;
+	double	t;
 
-	ang = (lr.vct.a * pl.n.a) + (lr.vct.b * pl.n.b) + (lr.vct.c * pl.n.c);
-	if (ang == 0)
+	if (ft_sameplane(pl, lr))
 		return (0);
-	if (ang < 0)
-		ang = ang * (-1);
-	d = fabs(pl.n.a * lr.pt.x + pl.n.b * lr.pt.y + pl.n.c * lr.pt.z
-	+ ((-1) * pl.n.a * pl.pt.x - pl.n.b * pl.pt.y - pl.n.c * pl.pt.z));
-	if (d == 0)
+	cs = (lr.vct.a * pl->n.a) + (lr.vct.b * pl->n.b) + (lr.vct.c * pl->n.c);
+	if (cs == 0)
 		return (0);
-	ipt.x = lr.pt.x + ((d / ang) * lr.vct.a);
-	ipt.y = lr.pt.y + ((d / ang) * lr.vct.b);
-	ipt.z = lr.pt.z + ((d / ang) * lr.vct.c);
+	d =  (-1) * pl->n.a * pl->pt.x - pl->n.b * pl->pt.y - pl->n.c * pl->pt.z;
+	t = (-d - pl->n.a * lr.pt.x - pl->n.b * lr.pt.y - pl->n.c * lr.pt.z)
+	/ (pl->n.a * lr.vct.a + pl->n.b * lr.vct.b + pl->n.c * lr.vct.c);
+	if (t <= 0)
+		return (0);
+	ipt.x = lr.pt.x + (t * lr.vct.a);
+	ipt.y = lr.pt.y + (t * lr.vct.b);
+	ipt.z = lr.pt.z + (t * lr.vct.c);
 	if (ft_checklgt(ipt, lgto, lr))
 		return (0);
 	return (1);

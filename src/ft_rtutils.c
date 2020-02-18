@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 08:37:26 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/14 09:16:12 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/18 08:38:00 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,4 +42,19 @@ int			ft_checklgt(t_pt ipt, t_pt lgto, t_ray lr)
 		return (1);
 	else
 		return (0);
+}
+
+int			ft_changecam(int key, t_data *data)
+{
+	if (key == 124 && (data->cam->next != NULL))
+	{
+		data->cam = data->cam->next;
+		ft_minirt(data);
+	}
+	if (key == 123 && (data->cam->back != NULL))
+	{
+		data->cam = data->cam->back;
+		ft_minirt(data);
+	}
+	return (1);
 }
