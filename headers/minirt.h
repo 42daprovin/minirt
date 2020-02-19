@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 17:33:39 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/18 11:49:32 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/19 11:08:51 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # define CY 4
 # define TR 5
 # define E 1e-13
+# define MAX_DEPTH 3
 
 typedef struct	s_pt
 {
@@ -113,6 +114,8 @@ typedef struct	s_obj
 	int				id;
 	void			*fig;
 	struct s_obj	*next;
+	int				spec;
+	double			rcf;
 }				t_obj;
 
 typedef struct	s_data
@@ -124,6 +127,8 @@ typedef struct	s_data
 	t_algt			*algt;
 	void			*w_ptr;
 	void			*mlx;
+	int				spec;
+	int				depth;
 }				t_data;
 
 typedef struct	s_h
@@ -170,8 +175,11 @@ int				ft_intersp2(double *h, t_data data, t_ray ray, double *t_co);
 t_h				ft_intersp(t_data data, t_ray ray, int *clr, t_pt *intpt);
 int				ft_interlgtsp(t_sp *sp, t_ray lr, t_pt lgto);
 t_h				ft_interpl(t_data data, t_ray ray, int *clr, t_pt *intpt);
-t_vct			ft_setclrpl(t_data data, int *clr, t_pt ipt);
+t_vct			ft_setclrpl(t_data data, int *clr, t_pt ipt, t_ray ray);
 int				ft_interlgtpl(t_pl *pl, t_ray lr, t_pt lgto);
 int				ft_changecam(int key, t_data *data);
+t_vct			ft_addvect(t_vct v, t_vct u);
+t_vct			ft_normalize(t_vct v);
+double			ft_dotprod(t_vct v, t_vct u);
 
 #endif
