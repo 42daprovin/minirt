@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 15:38:33 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/07 15:53:40 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/19 11:55:17 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,13 @@ int			ft_pl(char **spl, t_data *data)
 		return (2);
 	if (!(pl = (t_pl*)malloc(sizeof(t_pl))))
 		return (2);
-	if (ft_strstrlen(spl) != 4)
+	if (ft_strstrlen(spl) != 6)
 		return (1);
 	if (ft_checkargs(spl[1]) || ft_checkargs(spl[2]) || ft_checkargs(spl[3]))
 		return (1);
 	obj->id = PL;
+	obj->spec = ft_atoi(spl[4]);
+	obj->rcf = ft_doubatoi(spl[5]);
 	if (ft_fpt(spl[1], &(pl->pt)) || ft_fvct(spl[2], &(pl->n))
 	|| ft_fclr(spl[3], &(pl->clr)))
 		return (2);
@@ -46,11 +48,13 @@ int			ft_sp(char **ssp, t_data *data)
 		return (2);
 	if (!(sp = (t_sp*)malloc(sizeof(t_sp))))
 		return (2);
-	if (ft_strstrlen(ssp) != 4)
+	if (ft_strstrlen(ssp) != 6)
 		return (1);
 	if (ft_checkargs(ssp[1]) || ft_checkdoub(ssp[2]) || ft_checkargs(ssp[3]))
 		return (1);
 	obj->id = SP;
+	obj->spec = ft_atoi(ssp[4]);
+	obj->rcf = ft_doubatoi(ssp[5]);
 	if (ft_fpt(ssp[1], &(sp->c)) || ft_fclr(ssp[3], &(sp->clr)))
 		return (2);
 	sp->d = ft_doubatoi(ssp[2]);

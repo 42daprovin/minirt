@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 09:30:49 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/18 11:50:57 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/19 12:08:51 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "../headers/mlx.h"
 #include <math.h>
 
-t_vct			ft_setclrpl(t_data data, int *clr, t_pt ipt)
+t_vct			ft_setclrpl(t_data data, int *clr, t_pt ipt, t_ray ray)
 {
 	int		clro[3];
 	t_vct	ivct;
@@ -26,9 +26,9 @@ t_vct			ft_setclrpl(t_data data, int *clr, t_pt ipt)
 	clro[1] = ((t_pl*)data.obj->fig)->clr[1];
 	clro[2] = ((t_pl*)data.obj->fig)->clr[2];
 	*clr = (clro[0] << 16) | (clro[1] << 8) | clro[2];
-	ivct.a = data.cam->o.x - ipt.x;
-	ivct.b = data.cam->o.y - ipt.y;
-	ivct.c = data.cam->o.z - ipt.z;
+	ivct.a = ray.pt.x - ipt.x;
+	ivct.b = ray.pt.y - ipt.y;
+	ivct.c = ray.pt.z - ipt.z;
 	n = ((t_pl*)data.obj->fig)->n;
 	if (ivct.a * n.a + ivct.b * n.b + ivct.c * n.c < 0)
 	{
@@ -66,16 +66,16 @@ t_h					ft_interpl(t_data data, t_ray ray, int *clr, t_pt *intpt)
 
 	hh.r = 0;
 	t = ft_interpl2(data,ray);
-	if (t <= 0)
+	if (t <= E)
 		return (hh);
 	ipt.x = ray.pt.x + t * ray.vct.a;
 	ipt.y = ray.pt.y + t * ray.vct.b;
 	ipt.z = ray.pt.z + t * ray.vct.c;
-	if (ft_dist(data.cam->o, *intpt) == 0
-	|| ft_dist(data.cam->o, ipt) < ft_dist(data.cam->o, *intpt))
+	if (ft_dist(ray.pt, *intpt) == 0
+	|| ft_dist(ray.pt, ipt) < ft_dist(ray.pt, *intpt))
 	{
 		*intpt = ipt;
-		hh.n = ft_setclrpl(data, clr, *intpt);
+		hh.n = ft_setclrpl(data, clr, *intpt, ray);
 		hh.r = 1;
 	}
 	return (hh);

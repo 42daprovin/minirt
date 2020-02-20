@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 09:18:13 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/14 20:21:31 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/19 19:06:53 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ int			ft_intersp2(double *h, t_data data, t_ray ray, double *t_co)
 {
 	t_vct	vct;
 
-	vct.a = ((t_sp*)data.obj->fig)->c.x - data.cam->o.x;
-	vct.b = ((t_sp*)data.obj->fig)->c.y - data.cam->o.y;
-	vct.c = ((t_sp*)data.obj->fig)->c.z - data.cam->o.z;
+	vct.a = ((t_sp*)data.obj->fig)->c.x - ray.pt.x;
+	vct.b = ((t_sp*)data.obj->fig)->c.y - ray.pt.y;
+	vct.c = ((t_sp*)data.obj->fig)->c.z - ray.pt.z;
 	*h = sqrt(pow(vct.a, 2) + pow(vct.b, 2) + pow(vct.c, 2));
 	*t_co = (ray.vct.a * vct.a) + (ray.vct.b * vct.b) + (ray.vct.c * vct.c);
 	if (*t_co < 0)
@@ -65,11 +65,11 @@ t_h			ft_intersp(t_data data, t_ray ray, int *clr, t_pt *intpt)
 	if (d < 0 || d > (((t_sp*)data.obj->fig)->d) / 2)
 		return (hh);
 	h = t_co - sqrt(pow(((t_sp*)data.obj->fig)->d / 2, 2) - pow(d, 2));
-	ipt.x = data.cam->o.x + (h * ray.vct.a);
-	ipt.y = data.cam->o.y + (h * ray.vct.b);
-	ipt.z = data.cam->o.z + (h * ray.vct.c);
-	if (ft_dist(data.cam->o, *intpt) == 0
-	|| ft_dist(data.cam->o, ipt) < ft_dist(data.cam->o, *intpt))
+	ipt.x = ray.pt.x + (h * ray.vct.a);
+	ipt.y = ray.pt.y + (h * ray.vct.b);
+	ipt.z = ray.pt.z + (h * ray.vct.c);
+	if (ft_dist(ray.pt, *intpt) == 0
+	|| ft_dist(ray.pt, ipt) < ft_dist(ray.pt, *intpt))
 	{
 		*intpt = ipt;
 		hh.n = ft_setclrsp(data, clr, *intpt);

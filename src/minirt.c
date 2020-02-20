@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 18:55:58 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/18 08:55:29 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/18 18:22:07 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,11 +73,13 @@ static int	ft_selectdata(char *line, t_data *data)
 
 static void	ft_initdata(t_data *data)
 {
+	data->depth = 0;
 	data->obj = NULL;
 	data->lgt = NULL;
 	data->cam = NULL;
 	data->res = NULL;
 	data->algt = NULL;
+	data->spec = 0;
 }
 
 int			main(int ac, char **av)

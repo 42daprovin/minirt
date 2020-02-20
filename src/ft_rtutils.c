@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 08:37:26 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/18 08:38:00 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/18 16:18:36 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,4 +57,33 @@ int			ft_changecam(int key, t_data *data)
 		ft_minirt(data);
 	}
 	return (1);
+}
+
+t_vct		ft_addvect(t_vct v, t_vct u)
+{
+	 t_vct w;
+
+	 w.a = v.a + u.a;
+	 w.b = v.b + u.b;
+	 w.c = v.c + u.c;
+	 return (w);
+}
+
+t_vct		ft_normalize(t_vct v)
+{
+	double	n;
+
+	n = sqrt(pow(v.a, 2) + pow(v.b, 2) + pow(v.c, 2));
+	v.a = v.a / n;
+	v.b = v.b / n;
+	v.c = v.c / n;
+	return (v);
+}
+
+double		ft_dotprod(t_vct v, t_vct u)
+{
+	double	d;
+
+	d = (v.a * u.a + v.b * u.b + v.c * u.c);
+	return (d);
 }

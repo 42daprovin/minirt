@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 09:09:35 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/18 11:58:53 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/19 12:22:11 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void		ft_3dshadow(int *clr, double cf)
 	| (int)(clrp[2] * cf);
 }
 
-int			ft_clr(int clr[3], double lang, int clr2)
+int			ft_clr(int clr[3], double spec, int clr2)
 {
 	int		c;
 	int		clrp[3];
@@ -66,9 +66,9 @@ int			ft_clr(int clr[3], double lang, int clr2)
 	clr2 = c;
 	clrp[2] = clr2 & 255;
 	clr2 = c;
-	c = ((int)(clr[0] * pow(lang, 65) + clrp[0] * (1 - pow(lang, 65))) << 16)
-	| ((int)(clr[1] * pow(lang, 65) + clrp[1] * (1 - pow(lang, 65))) << 8)
-	| (int)(clr[2] * pow(lang, 65) + clrp[2] * (1 - pow(lang, 65)));
+	c = ((int)(clr[0] * spec + clrp[0] * (1 - spec)) << 16)
+	| ((int)(clr[1] * spec + clrp[1] * (1 - spec)) << 8)
+	| (int)(clr[2] * spec + clrp[2] * (1 - spec));
 	return (c);
 }
 
@@ -82,28 +82,26 @@ double		ft_changecf(double cf, t_vct lv, t_vct n, t_data data)
 	: cf + (data.lgt->br * fmax(lang, 0));
 	return (ncf);
 }
-int			ft_shine(t_ray lr, t_vct n, t_data d)
+int			ft_shine(t_ray lr, t_vct n, t_data d, int *clr)
 {
-	double	ang;
-	t_vct	camv;
-	double	norm;
-	t_vct	vp;
-	double	ang2;
+	double	dot;
+	double	len;
+	t_vct	tmpn;
+	t_vct	refv;
+	double	spec;
 
-	norm = sqrt(pow(d.cam->o.x - lr.pt.x, 2)
-	+ pow(d.cam->o.y - lr.pt.y, 2) + pow(d.cam->o.z - lr.pt.z, 2));
-	camv.a = (d.cam->o.x - lr.pt.x) / norm;
-	camv.b = (d.cam->o.y - lr.pt.y) / norm;
-	camv.c = (d.cam->o.z - lr.pt.z) / norm;
-	ang = 2 * acos(camv.a * n.a + camv.b * n.b + camv.c * n.c);
-	vp.a = camv.b * n.c - camv.c * n.b;
-	vp.b = camv.c * n.a - camv.a * n.c;
-	vp.c = camv.a * n.b - camv.b * n.a;
-	ang2 = acos(camv.a * lr.vct.a + camv.b * lr.vct.b + camv.c * lr.vct.c);
-	norm = lr.vct.a * vp.a + lr.vct.b * vp.b + lr.vct.c * vp.c;
-	if ((fabs(ang - ang2) < 0.5))
-		return (1);
-	return(0);
+	lr.vct.a = -lr.vct.a;
+	lr.vct.b = -lr.vct.b;
+	lr.vct.c = -lr.vct.c;
+	dot = -(n.a * lr.vct.a + n.b * lr.vct.b + n.c * lr.vct.c);
+	len = 2 * dot;
+	tmpn.a = len * n.a;
+	tmpn.b = len * n.b;
+	tmpn.c = len * n.c;
+	refv = ft_normalize(ft_addvect(tmpn, lr.vct));
+	spec = fmax(-ft_dotprod(refv, d.cam->n), 0);
+	spec = pow(spec, 6);
+	return (ft_clr(d.lgt->clr, spec, *clr));
 }
 
 void		ft_shadding(int *clr, t_vct n, t_pt ip, t_data *data)
@@ -112,7 +110,6 @@ void		ft_shadding(int *clr, t_vct n, t_pt ip, t_data *data)
 	t_ray	lr;
 	double	norm;
 	double	cf;
-	double	lang;
 
 	cf = data->algt->br;
 	lr.pt = ip;
@@ -127,9 +124,8 @@ void		ft_shadding(int *clr, t_vct n, t_pt ip, t_data *data)
 		if (!(ft_interlgt(ndata.lgt->o, lr, data)))
 		{
 			cf = ft_changecf(cf, lr.vct, n, ndata);
-		lang = (lr.vct.a * n.a) + (lr.vct.b * n.b) + (lr.vct.c * n.c);
-		//if (ft_shine(lr, n, ndata)) Hay que cambiar muchas cosas
-			*clr = ft_clr(ndata.lgt->clr, lang, *clr);
+			if (data->spec)
+				*clr = ft_shine(lr, n, ndata, clr);
 		}
 		ndata.lgt = ndata.lgt->next;
 	}
