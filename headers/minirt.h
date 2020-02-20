@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 17:33:39 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/19 11:08:51 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/20 11:24:13 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # define SQ 3
 # define CY 4
 # define TR 5
-# define E 1e-13
+# define E 1e-12
 # define MAX_DEPTH 3
 
 typedef struct	s_pt
@@ -181,5 +181,7 @@ int				ft_changecam(int key, t_data *data);
 t_vct			ft_addvect(t_vct v, t_vct u);
 t_vct			ft_normalize(t_vct v);
 double			ft_dotprod(t_vct v, t_vct u);
+t_vct			ft_escprod(double k, t_vct v);
+t_vct			ft_vctatob(t_pt a, t_pt b);
 
 #endif
