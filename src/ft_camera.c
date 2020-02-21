@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 08:46:12 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/14 20:11:29 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/21 11:18:54 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,11 +62,16 @@ t_ray		ft_rotray(t_ray ray, t_data *data)
 	t_ray	rray;
 
 	cvct = data->cam->n;
-	nproy = sqrt(pow(cvct.b, 2) + pow(cvct.c, 2));
-	ct = (cvct.c * (-1)) / nproy;
-	ca = (pow(cvct.b, 2) + pow(cvct.c, 2)) / nproy;
-	rray = ft_rotx(ray, data, ct);
-	rray = ft_roty(rray, data, ca);
+//	nproy = sqrt(pow(cvct.b, 2) + pow(cvct.c, 2));
+//	ct = (cvct.c * (-1)) / nproy;
+//	ca = (pow(cvct.b, 2) + pow(cvct.c, 2)) / nproy;
+	nproy = sqrt(pow(cvct.a, 2) + pow(cvct.c, 2));
+	ca = (cvct.c * (-1)) / nproy;
+	ct = (pow(cvct.a, 2) + pow(cvct.c, 2)) / nproy;
+//	rray = ft_rotx(ray, data, ct);
+//	rray = ft_roty(rray, data, ca);
+	rray = ft_roty(ray, data, ca);
+	rray = ft_rotx(rray, data, ct);
 	rray.pt.x = data->cam->o.x;
 	rray.pt.y = data->cam->o.y;
 	rray.pt.z = data->cam->o.z;

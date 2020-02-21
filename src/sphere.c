@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 09:18:13 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/20 11:31:13 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/21 12:24:47 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,9 +24,6 @@ t_vct		ft_setclrsp(t_data data, int *clr, t_pt intpt)
 	clro[1] = ((t_sp*)data.obj->fig)->clr[1];
 	clro[2] = ((t_sp*)data.obj->fig)->clr[2];
 	*clr = (clro[0] << 16) | (clro[1] << 8) | clro[2];
-	/*vn.a = intpt.x - ((t_sp*)data.obj->fig)->c.x;
-	vn.b = intpt.y - ((t_sp*)data.obj->fig)->c.y;
-	vn.c = intpt.z - ((t_sp*)data.obj->fig)->c.z;*/
 	vn = ft_vctatob(((t_sp*)data.obj->fig)->c, intpt);
 	vn = ft_normalize(vn);
 	return (vn);
@@ -56,17 +53,13 @@ t_h			ft_intersp(t_data data, t_ray ray, int *clr, t_pt *intpt)
 	t_h		hh;
 
 	hh.r = 0;
-//	if (ft_intersp2(&h, data, ray, &t_co))
-//		return (hh);
 	ft_intersp2(&h, data, ray, &t_co);
 	d = sqrt(pow(h, 2) - pow(t_co, 2));
 	if (d < 0 || d > (((t_sp*)data.obj->fig)->d) / 2)
 		return (hh);
-	//if (t_co >= 0)//nuevo
 	h = t_co - sqrt(pow(((t_sp*)data.obj->fig)->d / 2, 2) - pow(d, 2));
-	//else
-	if (h < 0)//nuevo
-		h = t_co + sqrt(pow(((t_sp*)data.obj->fig)->d / 2, 2) - pow(d, 2));//nuevo
+	if (h < E)
+		h = t_co + sqrt(pow(((t_sp*)data.obj->fig)->d / 2, 2) - pow(d, 2));
 	if (h <= 3 * E)
 		return (hh);
 	ipt.x = ray.pt.x + (h * ray.vct.a);
@@ -93,14 +86,9 @@ int			ft_interlgtsp(t_sp *sp, t_ray lr, t_pt lgto)
 	double	d;
 	t_pt	ipt;
 
-	/*h_vc.a = sp->c.x - lr.pt.x;
-	h_vc.b = sp->c.y - lr.pt.y;
-	h_vc.c = sp->c.z - lr.pt.z;*/
 	h_vc = ft_vctatob(lr.pt, sp->c);
 	h = sqrt(pow(h_vc.a, 2) + pow(h_vc.b, 2) + pow(h_vc.c, 2));
 	t_co = (lr.vct.a * h_vc.a) + (lr.vct.b * h_vc.b) + (lr.vct.c * h_vc.c);
-	//if (t_co < 0)
-	//	return (0);
 	d = sqrt(pow(h, 2) - pow(t_co, 2));
 	if (d < 0 || d > sp->d / 2)
 		return (0);
