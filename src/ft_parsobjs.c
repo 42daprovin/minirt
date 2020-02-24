@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 15:38:33 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/19 11:55:17 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/24 09:53:06 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,12 +73,14 @@ int			ft_sq(char **ssq, t_data *data)
 		return (2);
 	if (!(sq = (t_sq*)malloc(sizeof(t_sq))))
 		return (2);
-	if (ft_strstrlen(ssq) != 5)
+	if (ft_strstrlen(ssq) != 7)
 		return (1);
 	if (ft_checkargs(ssq[1]) || ft_checkargs(ssq[2]) || ft_checkdoub(ssq[3])
 	|| ft_checkargs(ssq[4]))
 		return (1);
 	obj->id = SQ;
+	obj->spec = ft_atoi(ssq[5]);
+	obj->rcf = ft_doubatoi(ssq[6]);
 	if (ft_fpt(ssq[1], &(sq->c)) || ft_fvct(ssq[2], &(sq->n))
 	|| ft_fclr(ssq[4], &(sq->clr)))
 		return (2);

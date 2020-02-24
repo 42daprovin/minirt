@@ -6,7 +6,7 @@
 #    By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/30 15:35:32 by daprovin          #+#    #+#              #
-#    Updated: 2020/02/14 10:30:52 by daprovin         ###   ########.fr        #
+#    Updated: 2020/02/24 09:55:04 by daprovin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -28,6 +28,7 @@ OBJS := \
 	src/ft_rtutils.o \
 	src/sphere.o \
 	src/plane.o \
+	src/square.o \
 
 GFLAGS := -Wall -Werror -Wextra
 HEAD := headers/

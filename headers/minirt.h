@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 17:33:39 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/21 09:12:21 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/24 09:54:40 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -183,5 +183,6 @@ t_vct			ft_normalize(t_vct v);
 double			ft_dotprod(t_vct v, t_vct u);
 t_vct			ft_escprod(double k, t_vct v);
 t_vct			ft_vctatob(t_pt a, t_pt b);
+t_h				ft_intersq(t_data data, t_ray ray, int *clr, t_pt *intpt);
 
 #endif
