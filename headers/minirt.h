@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 17:33:39 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/24 09:54:40 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/03/03 15:24:47 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -166,8 +166,8 @@ t_h				ft_objtype(t_data ndata, t_ray ray, int *clr, t_pt *intpt);
 int				ft_intersect(t_ray ray, t_data *data, int *clr);
 int				ft_minirt(t_data *data);
 int				ft_interlgt(t_pt lgto, t_ray lr, t_data *data);
-void			ft_3dshadow(int *clr, double cf);
-double			ft_changecf(double cf, t_vct lv, t_vct n, t_data data);
+void			ft_3dshadow(int *clr, double cf[3]);
+void			ft_changecf(double (*cf)[3], t_vct lv, t_vct n, t_data data);
 void			ft_shadding(int *clr, t_vct n, t_pt ip, t_data *data);
 int				ft_checklgt(t_pt ipt, t_pt lgto, t_ray lr);
 t_vct			ft_setclrsp(t_data data, int *clr, t_pt intpt);
@@ -184,5 +184,6 @@ double			ft_dotprod(t_vct v, t_vct u);
 t_vct			ft_escprod(double k, t_vct v);
 t_vct			ft_vctatob(t_pt a, t_pt b);
 t_h				ft_intersq(t_data data, t_ray ray, int *clr, t_pt *intpt);
+int				ft_interlgtsq(t_sq *sq, t_ray lr, t_pt lgto);
 
 #endif

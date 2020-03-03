@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 08:37:26 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/20 12:06:04 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/02/25 08:27:38 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,8 +83,12 @@ t_vct		ft_normalize(t_vct v)
 double		ft_dotprod(t_vct v, t_vct u)
 {
 	double	d;
+	double	n1;
+	double	n2;
 
-	d = (v.a * u.a + v.b * u.b + v.c * u.c);
+	n1 = sqrt(pow(v.a, 2) + pow(v.b, 2) + pow(v.c, 2));
+	n2 = sqrt(pow(u.a, 2) + pow(u.b, 2) + pow(u.c, 2));
+	d = (v.a * u.a + v.b * u.b + v.c * u.c) / (n1 * n2);
 	return (d);
 }
 
