@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 08:37:26 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/25 08:27:38 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/03/05 17:43:58 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,4 +108,15 @@ t_vct		ft_vctatob(t_pt a, t_pt b)
 	v.b = b.y - a.y;
 	v.c = b.z - a.z;
 	return (v);
+}
+
+t_vct		ft_crossprod(t_vct v, t_vct u)
+{
+	t_vct	w;
+
+	w.a = v.b * u.c - v.c * u.b;
+	w.b = v.c * u.a - v.a * u.c;
+	w.c = v.a * u.b - v.b * u.a;
+
+	return (w);
 }
