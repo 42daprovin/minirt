@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 15:38:33 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/24 09:53:06 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/03/06 09:04:51 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -126,12 +126,14 @@ int			ft_tr(char **str, t_data *data)
 		return (2);
 	if (!(obj = (t_obj*)malloc(sizeof(t_obj))))
 		return (2);
-	if (ft_strstrlen(str) != 5)
+	if (ft_strstrlen(str) != 7)
 		return (1);
 	if (ft_checkargs(str[1]) || ft_checkargs(str[2]) || ft_checkargs(str[3])
 	|| ft_checkargs(str[4]))
 		return (1);
 	obj->id = TR;
+	obj->spec = ft_atoi(str[5]);
+	obj->rcf = ft_doubatoi(str[6]);
 	if (ft_fpt(str[1], &(tr->A)) || ft_fpt(str[2], &(tr->B))
 	|| ft_fpt(str[3], &(tr->C)) || ft_fclr(str[4], &(tr->clr)))
 		return (2);

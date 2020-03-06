@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 09:09:35 by daprovin          #+#    #+#             */
-/*   Updated: 2020/03/03 15:51:57 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/03/06 11:10:43 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ int			ft_interlgt(t_pt lgto, t_ray lr, t_data *data)
 		else if (ndata.obj->id == CY)
 		{}
 		else if (ndata.obj->id == TR)
-		{}
+			r = fmax(ft_interlgttr((t_tr*)ndata.obj->fig, lr, lgto), r);
 		ndata.obj = ndata.obj->next;
 	}
 	return (r);

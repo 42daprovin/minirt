@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/24 08:41:38 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/25 09:25:29 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/03/06 10:25:58 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,7 +114,7 @@ static int		ft_samesquare(t_sq *sq, t_ray lr)
 
 	v = ft_vctatob(sq->c, lr.pt);
 	cs = ft_dotprod(v, sq->n);
-	if (cs < E)
+	if (fabs(cs) < E)
 		return (1);
 	return (0);
 }

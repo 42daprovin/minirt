@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 08:52:47 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/24 11:05:05 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/03/06 09:25:54 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ t_h			ft_objtype(t_data ndata, t_ray ray, int *clr, t_pt *intpt)
 	else if (ndata.obj->id == CY)
 	{}
 	else if (ndata.obj->id == TR)
-	{}
+		h = ft_intertr(ndata, ray, clr, intpt);
 	return (h);
 }
 t_ray		ft_reflexion(t_pt intpt, t_ray ray, t_vct n)
@@ -100,8 +100,8 @@ int			ft_intersect(t_ray ray, t_data *data, int *clr)
 	}
 	if (h.r != 0)
 		ft_shadding(clr, h.n, intpt, data);
-	else
-		*clr = 0;
+	//else
+		//*clr = 0;
 	if (rcf != 0 && data->depth < MAX_DEPTH)
 	{
 		clr1 = *clr;

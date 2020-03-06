@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 09:30:49 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/19 12:08:51 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/03/06 10:24:54 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static int			ft_sameplane(t_pl *pl, t_ray lr)
 	v.b = lr.pt.y - pl->pt.y;
 	v.c = lr.pt.z - pl->pt.z;
 	cs = v.a * pl->n.a + v.b * pl->n.b + v.c * pl->n.c;
-	if (cs < E)
+	if (fabs(cs) < E)
 		return (1);
 	return (0);
 }

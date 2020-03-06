@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 17:24:31 by daprovin          #+#    #+#             */
-/*   Updated: 2020/03/05 18:16:00 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/03/06 10:31:02 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ double			ft_intertr2(t_tr tr, t_ray ray)
 	/ (n.a * ray.vct.a + n.b * ray.vct.b + n.c * ray.vct.c);
 	return (t);
 }
-static int		p_is_outside_tr(t_tr tr, t_pt p)
+int			p_is_outside_tr(t_tr tr, t_pt p)
 {
 	t_vct	vp;
 	t_vct	l;
@@ -41,7 +41,7 @@ static int		p_is_outside_tr(t_tr tr, t_pt p)
 
 	vp = ft_vctatob(tr.A, p);
 	l = ft_vctatob(tr.A, tr.B);
-	l2 = ft_vctatob(tr.A, tr.B);
+	l2 = ft_vctatob(tr.A, tr.C);
 	cs = ft_dotprod(ft_crossprod(l, vp), ft_crossprod(l, l2));
 	if (cs < 0)
 		return (1);
@@ -62,7 +62,26 @@ static int		p_is_outside_tr(t_tr tr, t_pt p)
 t_vct			ft_setclrtr(t_data data, int *clr, t_pt ipt, t_ray ray)
 {
 	int		clro[3];
-	t_vct	ivct; //por aqui vamos
+	t_vct	ivct;
+	t_vct	n;
+	double	cs;
+	t_tr	tr;
+
+	tr = *((t_tr*)data.obj->fig);
+	clro[0] = ((t_tr*)data.obj->fig)->clr[0];
+	clro[1] = ((t_tr*)data.obj->fig)->clr[1];
+	clro[2] = ((t_tr*)data.obj->fig)->clr[2];
+	*clr = (clro[0] << 16) | (clro[1] << 8) | clro[2];
+	ivct = ft_vctatob(ipt, ray.pt);
+	n = ft_crossprod(ft_vctatob(tr.A, tr.B), ft_vctatob(tr.A, tr.C));
+	n = ft_normalize(n);
+	if (ft_dotprod(ivct, n) < 0)
+	{
+		n.a = n.a * (-1);
+		n.b = n.b * (-1);
+		n.c = n.c * (-1);
+	}
+	return (n);
 }
 
 t_h				ft_intertr(t_data data, t_ray ray, int *clr, t_pt *intpt)
@@ -80,7 +99,7 @@ t_h				ft_intertr(t_data data, t_ray ray, int *clr, t_pt *intpt)
 	ipt.z = ray.pt.z + t * ray.vct.c;
 	if (p_is_outside_tr(*((t_tr*)data.obj->fig), ipt))
 		return (hh);
-	if (ft_dist(ray.pt, ipt) == 0
+	if (ft_dist(ray.pt, *intpt) == 0
 	|| ft_dist(ray.pt, ipt) < ft_dist(ray.pt, *intpt))
 	{
 		*intpt = ipt;
