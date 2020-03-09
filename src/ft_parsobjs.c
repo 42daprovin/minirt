@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 15:38:33 by daprovin          #+#    #+#             */
-/*   Updated: 2020/03/06 09:04:51 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/03/09 11:19:57 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,12 +100,14 @@ int			ft_cy(char **scy, t_data *data)
 		return (2);
 	if (!(cy = (t_cy*)malloc(sizeof(t_cy))))
 		return (2);
-	if (ft_strstrlen(scy) != 6)
+	if (ft_strstrlen(scy) != 8)
 		return (1);
 	if (ft_checkargs(scy[1]) || ft_checkargs(scy[2]) || ft_checkdoub(scy[3])
 	|| ft_checkdoub(scy[4]), ft_checkargs(scy[5]))
 		return (1);
 	obj->id = CY;
+	obj->spec = ft_atoi(scy[6]);
+	obj->rcf = ft_doubatoi(scy[7]);
 	if (ft_fpt(scy[1], &(cy->pt)) || ft_fvct(scy[2], &(cy->n))
 	|| ft_fclr(scy[5], &(cy->clr)))
 		return (2);

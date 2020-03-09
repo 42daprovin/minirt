@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 08:52:47 by daprovin          #+#    #+#             */
-/*   Updated: 2020/03/06 09:25:54 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/03/09 11:35:45 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_h			ft_objtype(t_data ndata, t_ray ray, int *clr, t_pt *intpt)
 	else if (ndata.obj->id == SQ)
 		h = ft_intersq(ndata, ray, clr, intpt);
 	else if (ndata.obj->id == CY)
-	{}
+		h = ft_intercy(ndata, ray, clr, intpt);
 	else if (ndata.obj->id == TR)
 		h = ft_intertr(ndata, ray, clr, intpt);
 	return (h);

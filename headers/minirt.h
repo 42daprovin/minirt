@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 17:33:39 by daprovin          #+#    #+#             */
-/*   Updated: 2020/03/06 11:11:10 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/03/09 12:33:32 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -190,5 +190,8 @@ t_h				ft_intertr(t_data data, t_ray ray, int *clr, t_pt *intpt);
 int				p_is_outside_tr(t_tr tr, t_pt p);
 double			ft_intertr2(t_tr tr, t_ray ray);
 int				ft_interlgttr(t_tr *tr, t_ray lr, t_pt lgto);
+double			ft_dotprod2(t_vct v, t_vct u);
+t_vct			ft_subsvct(t_vct v, t_vct u);
+t_h				ft_intercy(t_data data, t_ray ray, int *clr, t_pt *intpt);
 
 #endif

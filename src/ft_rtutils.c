@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 08:37:26 by daprovin          #+#    #+#             */
-/*   Updated: 2020/03/05 17:43:58 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/03/09 10:56:16 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,6 +92,14 @@ double		ft_dotprod(t_vct v, t_vct u)
 	return (d);
 }
 
+double		ft_dotprod2(t_vct v, t_vct u)
+{
+	double	d;
+
+	d = (v.a * u.a + v.b * u.b + v.c * u.c);
+	return (d);
+}
+
 t_vct		ft_escprod(double k, t_vct v)
 {
 	v.a = k * v.a;
@@ -117,6 +125,15 @@ t_vct		ft_crossprod(t_vct v, t_vct u)
 	w.a = v.b * u.c - v.c * u.b;
 	w.b = v.c * u.a - v.a * u.c;
 	w.c = v.a * u.b - v.b * u.a;
+	return (w);
+}
 
+t_vct		ft_subsvct(t_vct v, t_vct u)
+{
+	t_vct	w;
+
+	w.a = v.a - u.a;
+	w.b = v.b - u.b;
+	w.c = v.c - u.c;
 	return (w);
 }
