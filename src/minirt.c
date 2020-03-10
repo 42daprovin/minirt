@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 18:55:58 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/18 18:22:07 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/03/09 17:54:18 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,11 +84,10 @@ static void	ft_initdata(t_data *data)
 
 int			main(int ac, char **av)
 {
-	int		fd;
-//	void	*mlx_ptr;
-//	void	*win_ptr;
-	char	*line;
-	t_data	data;
+	int			fd;
+	char		*line;
+	t_data		data;
+	t_mlximg	im;
 
 	ft_initdata(&data);
 	fd = open(av[1], O_RDONLY);
@@ -100,6 +99,9 @@ int			main(int ac, char **av)
 	};
 	data.mlx = mlx_init();
 	data.w_ptr = mlx_new_window(data.mlx, data.res->x, data.res->y, "miniRT");
+	data.imptr = mlx_new_image(data.mlx, data.res->x, data.res->y);
+	data.imdt = (int*)mlx_get_data_addr(data.imptr, &im.bpp, &im.sl, &im.nd);
+	data.size_line = im.sl;
 	ft_minirt(&data);
 	mlx_hook(data.w_ptr, 17, 0, ft_close, (void *)0);
 	mlx_hook(data.w_ptr, 2, 0, ft_changecam, &data);

@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 17:33:39 by daprovin          #+#    #+#             */
-/*   Updated: 2020/03/09 12:33:32 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/03/10 02:01:46 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # define SQ 3
 # define CY 4
 # define TR 5
-# define E 1e-12
+# define E 1e-11
 # define MAX_DEPTH 3
 
 typedef struct	s_pt
@@ -127,15 +127,25 @@ typedef struct	s_data
 	t_algt			*algt;
 	void			*w_ptr;
 	void			*mlx;
+	void			*imptr;
+	int				*imdt;
+	int				size_line;
 	int				spec;
 	int				depth;
 }				t_data;
+
+typedef struct	s_mlximg
+{
+	int			bpp;
+	int			sl;
+	int			nd;
+}				t_mlximg;
 
 typedef struct	s_h
 {
 	int				r;
 	t_vct			n;
-}				t_h;//esto es de prueba
+}				t_h;
 
 int				ft_strstrlen(char **str);
 double			ft_doubatoi(char *str);
@@ -193,5 +203,6 @@ int				ft_interlgttr(t_tr *tr, t_ray lr, t_pt lgto);
 double			ft_dotprod2(t_vct v, t_vct u);
 t_vct			ft_subsvct(t_vct v, t_vct u);
 t_h				ft_intercy(t_data data, t_ray ray, int *clr, t_pt *intpt);
+int				ft_interlgtcy(t_cy *cy, t_ray lr, t_pt lgto);
 
 #endif

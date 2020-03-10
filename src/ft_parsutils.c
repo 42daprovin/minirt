@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 16:16:17 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/07 16:19:31 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/03/10 04:00:03 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,14 @@ int			ft_fclr(char *spl, int (*clr)[3])
 	(*clr)[1] = ft_atoi(fill[1]);
 	(*clr)[2] = ft_atoi(fill[2]);
 	free(fill);
+	return (0);
+}
+
+int			ft_checkbr(char *str)
+{
+	if (ft_checkdoub(str))
+		return (1);
+	if (ft_doubatoi(str) > 1 || ft_doubatoi(str) < 0)
+		return (1);
 	return (0);
 }

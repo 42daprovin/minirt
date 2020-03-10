@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 08:52:47 by daprovin          #+#    #+#             */
-/*   Updated: 2020/03/09 11:35:45 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/03/09 17:55:52 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ t_h			ft_objtype(t_data ndata, t_ray ray, int *clr, t_pt *intpt)
 		h = ft_intertr(ndata, ray, clr, intpt);
 	return (h);
 }
+
 t_ray		ft_reflexion(t_pt intpt, t_ray ray, t_vct n)
 {
 	double	cs;
@@ -100,8 +101,8 @@ int			ft_intersect(t_ray ray, t_data *data, int *clr)
 	}
 	if (h.r != 0)
 		ft_shadding(clr, h.n, intpt, data);
-	//else
-		//*clr = 0;
+	else
+		*clr = 0;
 	if (rcf != 0 && data->depth < MAX_DEPTH)
 	{
 		clr1 = *clr;
@@ -110,7 +111,7 @@ int			ft_intersect(t_ray ray, t_data *data, int *clr)
 		ft_intersect(ray, data, clr);
 		*clr = ft_refclr(clr1, *clr, rcf);
 	}
-	return (h.r);
+	return (1);
 }
 
 int			ft_minirt(t_data *data)
@@ -123,18 +124,20 @@ int			ft_minirt(t_data *data)
 	x = 0;
 	y = 0;
 	clr = 0;
-	while (x < data->res->x)
+	while (y < data->res->y)
 	{
-		y = 0;
-		while (y < data->res->y)
+		x = 0;
+		while (x < data->res->x)
 		{
 			ray = ft_camrays(x, y, data);
 			data->depth = 0;
 			if (ft_intersect(ray, data, &clr))
-				mlx_pixel_put(data->mlx, data->w_ptr, x, y, clr);
-			y++;
+				data->imdt[(int)(y * (data->size_line / 4) + x)] = clr;
+				//mlx_pixel_put(data->mlx, data->w_ptr, x, y, clr);
+			x++;
 		}
-		x++;
+		y++;
 	}
+	mlx_put_image_to_window(data->mlx, data->w_ptr, data->imptr, 0, 0);
 	return (0);
 }
