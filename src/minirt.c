@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 18:55:58 by daprovin          #+#    #+#             */
-/*   Updated: 2020/03/09 17:54:18 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/03/10 18:00:12 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,21 +87,20 @@ int			main(int ac, char **av)
 	int			fd;
 	char		*line;
 	t_data		data;
-	t_mlximg	im;
+	int			r;
 
-	ft_initdata(&data);
+//	if (r = ft_checkinput(ac, av)
+//		ft_initdata(&data);
 	fd = open(av[1], O_RDONLY);
+//	if (fd < 0)
+//		ft_error_destructor(-1);
 	while (gnl(fd, &line) > 0)
 	{
-		if (ft_selectdata(line, &data) > 0)
-		{}//error
+		if ((r = ft_selectdata(line, &data)) > 0)
+			{}//ft_error_destructor(r);
 		free(line);
 	};
-	data.mlx = mlx_init();
-	data.w_ptr = mlx_new_window(data.mlx, data.res->x, data.res->y, "miniRT");
-	data.imptr = mlx_new_image(data.mlx, data.res->x, data.res->y);
-	data.imdt = (int*)mlx_get_data_addr(data.imptr, &im.bpp, &im.sl, &im.nd);
-	data.size_line = im.sl;
+	init_mlx(&data);
 	ft_minirt(&data);
 	mlx_hook(data.w_ptr, 17, 0, ft_close, (void *)0);
 	mlx_hook(data.w_ptr, 2, 0, ft_changecam, &data);

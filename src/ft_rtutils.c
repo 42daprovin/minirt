@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 08:37:26 by daprovin          #+#    #+#             */
-/*   Updated: 2020/03/09 15:18:58 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/03/10 18:30:07 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,3 +137,30 @@ t_vct		ft_subsvct(t_vct v, t_vct u)
 	w.c = v.c - u.c;
 	return (w);
 }
+
+void			init_mlx(t_data *data)
+{
+	t_mlximg	im;
+
+	data->mlx = mlx_init();
+	data->w_ptr =
+	mlx_new_window(data->mlx, data->res->x, data->res->y, "miniRT");
+	data->imptr = mlx_new_image(data->mlx, data->res->x, data->res->y);
+	data->imdt = (int*)mlx_get_data_addr(data->imptr, &im.bpp, &im.sl, &im.nd);
+	data->size_line = im.sl;
+	return ;
+}
+
+/*int				ft_checkinput(int ac,char **av)
+{
+	int		i;
+
+	if (ac < 2 || ac > 3)
+		return (3);
+} in progress
+
+
+
+
+
+

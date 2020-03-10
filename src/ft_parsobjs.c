@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 15:38:33 by daprovin          #+#    #+#             */
-/*   Updated: 2020/03/09 11:19:57 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/03/10 17:15:38 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,14 +19,15 @@ int			ft_pl(char **spl, t_data *data)
 	t_pl	*pl;
 	t_obj	*obj;
 
+	if (ft_strstrlen(spl) != 6)
+		return (1);
+	if (ft_checkargs(spl[1]) || ft_checkargs(spl[2]) || ft_checkcolor(spl[3])
+	|| ft_checkcf(spl[4]) || ft_checkcf(spl[5]))
+		return (1);
 	if (!(obj = (t_obj*)malloc(sizeof(t_obj))))
 		return (2);
 	if (!(pl = (t_pl*)malloc(sizeof(t_pl))))
 		return (2);
-	if (ft_strstrlen(spl) != 6)
-		return (1);
-	if (ft_checkargs(spl[1]) || ft_checkargs(spl[2]) || ft_checkargs(spl[3]))
-		return (1);
 	obj->id = PL;
 	obj->spec = ft_atoi(spl[4]);
 	obj->rcf = ft_doubatoi(spl[5]);
@@ -44,14 +45,15 @@ int			ft_sp(char **ssp, t_data *data)
 	t_sp	*sp;
 	t_obj	*obj;
 
+	if (ft_strstrlen(ssp) != 6)
+		return (1);
+	if (ft_checkargs(ssp[1]) || ft_checkdoub(ssp[2]) || ft_checkcolor(ssp[3])
+	|| ft_checkcf(ssp[4]) || ft_checkcf(ssp[5]))
+		return (1);
 	if (!(obj = (t_obj*)malloc(sizeof(t_obj))))
 		return (2);
 	if (!(sp = (t_sp*)malloc(sizeof(t_sp))))
 		return (2);
-	if (ft_strstrlen(ssp) != 6)
-		return (1);
-	if (ft_checkargs(ssp[1]) || ft_checkdoub(ssp[2]) || ft_checkargs(ssp[3]))
-		return (1);
 	obj->id = SP;
 	obj->spec = ft_atoi(ssp[4]);
 	obj->rcf = ft_doubatoi(ssp[5]);
@@ -69,15 +71,15 @@ int			ft_sq(char **ssq, t_data *data)
 	t_sq	*sq;
 	t_obj	*obj;
 
+	if (ft_strstrlen(ssq) != 7)
+		return (1);
+	if (ft_checkargs(ssq[1]) || ft_checkargs(ssq[2]) || ft_checkdoub(ssq[3])
+	|| ft_checkcolor(ssq[4]) || ft_checkcf(ssq[5]) || ft_checkcf(ssq[6]))
+		return (1);
 	if (!(obj = (t_obj*)malloc(sizeof(t_obj))))
 		return (2);
 	if (!(sq = (t_sq*)malloc(sizeof(t_sq))))
 		return (2);
-	if (ft_strstrlen(ssq) != 7)
-		return (1);
-	if (ft_checkargs(ssq[1]) || ft_checkargs(ssq[2]) || ft_checkdoub(ssq[3])
-	|| ft_checkargs(ssq[4]))
-		return (1);
 	obj->id = SQ;
 	obj->spec = ft_atoi(ssq[5]);
 	obj->rcf = ft_doubatoi(ssq[6]);
@@ -96,15 +98,16 @@ int			ft_cy(char **scy, t_data *data)
 	t_cy	*cy;
 	t_obj	*obj;
 
+	if (ft_strstrlen(scy) != 8)
+		return (1);
+	if (ft_checkargs(scy[1]) || ft_checkargs(scy[2]) || ft_checkdoub(scy[3])
+	|| ft_checkdoub(scy[4]) || ft_checkcolor(scy[5]) || ft_checkcf(scy[6])
+	|| ft_checkcf(scy[7]))
+		return (1);
 	if (!(obj = (t_obj*)malloc(sizeof(t_obj))))
 		return (2);
 	if (!(cy = (t_cy*)malloc(sizeof(t_cy))))
 		return (2);
-	if (ft_strstrlen(scy) != 8)
-		return (1);
-	if (ft_checkargs(scy[1]) || ft_checkargs(scy[2]) || ft_checkdoub(scy[3])
-	|| ft_checkdoub(scy[4]), ft_checkargs(scy[5]))
-		return (1);
 	obj->id = CY;
 	obj->spec = ft_atoi(scy[6]);
 	obj->rcf = ft_doubatoi(scy[7]);
@@ -124,15 +127,15 @@ int			ft_tr(char **str, t_data *data)
 	t_tr	*tr;
 	t_obj	*obj;
 
+	if (ft_strstrlen(str) != 7)
+		return (1);
+	if (ft_checkargs(str[1]) || ft_checkargs(str[2]) || ft_checkargs(str[3])
+	|| ft_checkcolor(str[4]) || ft_checkcf(str[5]) || ft_checkcf(str[6]))
+		return (1);
 	if (!(tr = (t_tr*)malloc(sizeof(t_tr))))
 		return (2);
 	if (!(obj = (t_obj*)malloc(sizeof(t_obj))))
 		return (2);
-	if (ft_strstrlen(str) != 7)
-		return (1);
-	if (ft_checkargs(str[1]) || ft_checkargs(str[2]) || ft_checkargs(str[3])
-	|| ft_checkargs(str[4]))
-		return (1);
 	obj->id = TR;
 	obj->spec = ft_atoi(str[5]);
 	obj->rcf = ft_doubatoi(str[6]);

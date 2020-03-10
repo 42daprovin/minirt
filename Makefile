@@ -6,7 +6,7 @@
 #    By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/30 15:35:32 by daprovin          #+#    #+#              #
-#    Updated: 2020/03/09 11:16:54 by daprovin         ###   ########.fr        #
+#    Updated: 2020/03/10 15:46:32 by daprovin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -32,6 +32,7 @@ OBJS := \
 	src/triangle.o \
 	src/trianglelights.o \
 	src/cylinder.o \
+	src/ft_parsutils2.o \
 
 GFLAGS := -Wall -Werror -Wextra
 HEAD := headers/

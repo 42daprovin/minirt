@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/09 09:44:14 by daprovin          #+#    #+#             */
-/*   Updated: 2020/03/10 02:19:10 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/03/10 17:42:14 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ void		ft_intercy2(t_cy cy, t_ray ray, double *t0, double *t1)
 {
 	t_vct	v;
 	t_vct	u;
-	double	A;
-	double	B;
-	double	C;
+	double	a;
+	double	b;
+	double	c;
 
 	v = ft_escprod(ft_dotprod2(ray.vct, cy.n), cy.n);
 	v.a = ray.vct.a - v.a;
@@ -29,11 +29,11 @@ void		ft_intercy2(t_cy cy, t_ray ray, double *t0, double *t1)
 	v.c = ray.vct.c - v.c;
 	u = ft_escprod(ft_dotprod2(ft_vctatob(cy.pt, ray.pt), cy.n), cy.n);
 	u = ft_subsvct(ft_vctatob(cy.pt, ray.pt), u);
-	A = ft_dotprod2(v, v);
-	B = 2 * ft_dotprod2(v, u);
-	C = ft_dotprod2(u, u) - pow(cy.d / 2, 2);
-	*t0 = (-B + sqrt(pow(B, 2) - 4 * A * C)) / (2 * A);
-	*t1 = (-B - sqrt(pow(B, 2) - 4 * A * C)) / (2 * A);
+	a = ft_dotprod2(v, v);
+	b = 2 * ft_dotprod2(v, u);
+	c = ft_dotprod2(u, u) - pow(cy.d / 2, 2);
+	*t0 = (-b + sqrt(pow(b, 2) - 4 * a * c)) / (2 * a);
+	*t1 = (-b - sqrt(pow(b, 2) - 4 * a * c)) / (2 * a);
 	return ;
 }
 
@@ -93,8 +93,6 @@ t_h			ft_intercy(t_data data, t_ray ray, int *clr, t_pt *intpt)
 		return (hh);
 	if (t[0] < E && t[1] < E)
 		return (hh);
-	//else if (t[0] < E || t[1] < E)
-		//t[2] = fmax(t[0], t[1]);
 	else if (distpltopt(*(t_cy*)data.obj->fig, &ipt, &t, ray))
 		return (hh);
 	if (ft_dist(ray.pt, *intpt) == 0
@@ -119,8 +117,6 @@ int			ft_interlgtcy(t_cy *cy, t_ray lr, t_pt lgto)
 		return (0);
 	if (t[0] < E && t[1] < E)
 		return (0);
-	//else if (t[0] < E || t[1] < E)
-		//t[2] = fmax(t[0], t[1]);
 	else if (distpltopt(*cy, &ipt, &t, lr))
 		return (0);
 	if (ft_checklgt(ipt, lgto, lr))

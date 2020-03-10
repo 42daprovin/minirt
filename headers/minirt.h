@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 17:33:39 by daprovin          #+#    #+#             */
-/*   Updated: 2020/03/10 02:01:46 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/03/10 17:50:04 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -204,5 +204,9 @@ double			ft_dotprod2(t_vct v, t_vct u);
 t_vct			ft_subsvct(t_vct v, t_vct u);
 t_h				ft_intercy(t_data data, t_ray ray, int *clr, t_pt *intpt);
 int				ft_interlgtcy(t_cy *cy, t_ray lr, t_pt lgto);
+int				ft_checkint(char *str);
+int				ft_checkcolor(char *str);
+int				ft_checkcf(char *str);
+void			init_mlx(t_data *data);
 
 #endif
