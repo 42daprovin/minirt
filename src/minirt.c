@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 18:55:58 by daprovin          #+#    #+#             */
-/*   Updated: 2020/03/10 18:00:12 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/03/12 17:52:30 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int			main(int ac, char **av)
 	int			r;
 
 //	if (r = ft_checkinput(ac, av)
-//		ft_initdata(&data);
+	ft_initdata(&data);
 	fd = open(av[1], O_RDONLY);
 //	if (fd < 0)
 //		ft_error_destructor(-1);
@@ -99,7 +99,7 @@ int			main(int ac, char **av)
 		if ((r = ft_selectdata(line, &data)) > 0)
 			{}//ft_error_destructor(r);
 		free(line);
-	};
+	}
 	init_mlx(&data);
 	ft_minirt(&data);
 	mlx_hook(data.w_ptr, 17, 0, ft_close, (void *)0);

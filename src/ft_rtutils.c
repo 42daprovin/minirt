@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 08:37:26 by daprovin          #+#    #+#             */
-/*   Updated: 2020/03/10 18:30:07 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/03/12 17:10:12 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -158,7 +158,7 @@ void			init_mlx(t_data *data)
 	if (ac < 2 || ac > 3)
 		return (3);
 } in progress
-
+*/
 
 
 
