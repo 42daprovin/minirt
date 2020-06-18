@@ -6,119 +6,54 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 08:37:26 by daprovin          #+#    #+#             */
-/*   Updated: 2020/03/12 17:10:12 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/06/11 05:52:31 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/libft.h"
 #include "../headers/minirt.h"
-#include "../headers/mlx.h"
 #include <math.h>
 
-double		ft_dist(t_pt p1, t_pt p2)
+void			ft_chess(t_pt ipt, int *clr, double nb)
 {
-	double	d;
+	int		i;
+	int		j;
 
-	d = sqrt(pow(p1.x - p2.x, 2) + pow(p1.y - p2.y, 2) + pow(p1.z - p2.z, 2));
-	return (d);
-}
-
-int			ft_close(void)
-{
-	exit(1);
-	return (0);
-}
-
-int			ft_checklgt(t_pt ipt, t_pt lgto, t_ray lr)
-{
-	t_vct	lobj2;
-	double	cs;
-
-	lobj2.a = lgto.x - ipt.x;
-	lobj2.b = lgto.y - ipt.y;
-	lobj2.c = lgto.z - ipt.z;
-	cs = (lobj2.a * lr.vct.a) + (lobj2.b * lr.vct.b) + (lobj2.c * lr.vct.c);
-	if (cs < 0)
-		return (1);
+	i = (ipt.z < 0) ? (int)fabs(ipt.z) + 5 : (int)ipt.z;
+	j = (ipt.x < 0) ? (int)fabs(ipt.x) + 5 : (int)ipt.x;
+	if (i % 10 < 5 && fabs(nb) == 1)
+		*clr = (~16777215) & 16777215;
 	else
-		return (0);
+		*clr = 16777215;
+	if (j % 10 < 5 && fabs(nb) == 1)
+		*clr = (~*clr) & 16777215;
 }
 
-int			ft_changecam(int key, t_data *data)
+int				ft_refclr(int clr1, int clr, double crf)
 {
-	if (key == 124 && (data->cam->next != NULL))
-	{
-		data->cam = data->cam->next;
-		ft_minirt(data);
-	}
-	if (key == 123 && (data->cam->back != NULL))
-	{
-		data->cam = data->cam->back;
-		ft_minirt(data);
-	}
-	return (1);
+	int		c;
+	int		clrp[3];
+	int		clr1p[3];
+
+	c = clr;
+	clrp[0] = clr >> 16;
+	clr = c;
+	clrp[1] = (clr & 65280) >> 8;
+	clr = c;
+	clrp[2] = clr & 255;
+	c = clr1;
+	clr1p[0] = clr1 >> 16;
+	clr1 = c;
+	clr1p[1] = (clr1 & 65280) >> 8;
+	clr1 = c;
+	clr1p[2] = clr1 & 255;
+	c = ((int)(clr1p[0] * (1 - crf) + clrp[0] * crf) << 16)
+	| ((int)(clr1p[1] * (1 - crf) + clrp[1] * crf) << 8)
+	| (int)(clr1p[2] * (1 - crf) + clrp[2] * crf);
+	return (c);
 }
 
-t_vct		ft_addvect(t_vct v, t_vct u)
-{
-	 t_vct w;
-
-	 w.a = v.a + u.a;
-	 w.b = v.b + u.b;
-	 w.c = v.c + u.c;
-	 return (w);
-}
-
-t_vct		ft_normalize(t_vct v)
-{
-	double	n;
-
-	n = sqrt(pow(v.a, 2) + pow(v.b, 2) + pow(v.c, 2));
-	v.a = v.a / n;
-	v.b = v.b / n;
-	v.c = v.c / n;
-	return (v);
-}
-
-double		ft_dotprod(t_vct v, t_vct u)
-{
-	double	d;
-	double	n1;
-	double	n2;
-
-	n1 = sqrt(pow(v.a, 2) + pow(v.b, 2) + pow(v.c, 2));
-	n2 = sqrt(pow(u.a, 2) + pow(u.b, 2) + pow(u.c, 2));
-	d = (v.a * u.a + v.b * u.b + v.c * u.c) / (n1 * n2);
-	return (d);
-}
-
-double		ft_dotprod2(t_vct v, t_vct u)
-{
-	double	d;
-
-	d = (v.a * u.a + v.b * u.b + v.c * u.c);
-	return (d);
-}
-
-t_vct		ft_escprod(double k, t_vct v)
-{
-	v.a = k * v.a;
-	v.b = k * v.b;
-	v.c = k * v.c;
-	return (v);
-}
-
-t_vct		ft_vctatob(t_pt a, t_pt b)
-{
-	t_vct v;
-
-	v.a = b.x - a.x;
-	v.b = b.y - a.y;
-	v.c = b.z - a.z;
-	return (v);
-}
-
-t_vct		ft_crossprod(t_vct v, t_vct u)
+t_vct			ft_crossprod(t_vct v, t_vct u)
 {
 	t_vct	w;
 
@@ -128,7 +63,7 @@ t_vct		ft_crossprod(t_vct v, t_vct u)
 	return (w);
 }
 
-t_vct		ft_subsvct(t_vct v, t_vct u)
+t_vct			ft_subsvct(t_vct v, t_vct u)
 {
 	t_vct	w;
 
@@ -141,26 +76,27 @@ t_vct		ft_subsvct(t_vct v, t_vct u)
 void			init_mlx(t_data *data)
 {
 	t_mlximg	im;
+	int			sizex;
+	int			sizey;
+	t_cam		*cam;
 
+	cam = data->cam;
 	data->mlx = mlx_init();
+	mlx_get_screen_size(data->mlx, &sizex, &sizey);
+	if (sizex < data->res->x)
+		data->res->x = sizex;
+	if (sizey < data->res->y)
+		data->res->y = sizey;
 	data->w_ptr =
 	mlx_new_window(data->mlx, data->res->x, data->res->y, "miniRT");
-	data->imptr = mlx_new_image(data->mlx, data->res->x, data->res->y);
-	data->imdt = (int*)mlx_get_data_addr(data->imptr, &im.bpp, &im.sl, &im.nd);
+	while (cam)
+	{
+		cam->imptr = mlx_new_image(data->mlx, data->res->x, data->res->y);
+		cam->imdt =
+		(int*)mlx_get_data_addr(cam->imptr, &im.bpp, &im.sl, &im.nd);
+		cam = cam->next;
+	}
 	data->size_line = im.sl;
+	data->bpp = im.bpp;
 	return ;
 }
-
-/*int				ft_checkinput(int ac,char **av)
-{
-	int		i;
-
-	if (ac < 2 || ac > 3)
-		return (3);
-} in progress
-*/
-
-
-
-
-

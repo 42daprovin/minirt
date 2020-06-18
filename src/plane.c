@@ -6,21 +6,19 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 09:30:49 by daprovin          #+#    #+#             */
-/*   Updated: 2020/03/06 10:24:54 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/06/18 02:47:08 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/libft.h"
 #include "../headers/minirt.h"
-#include "../headers/mlx.h"
 #include <math.h>
 
-t_vct			ft_setclrpl(t_data data, int *clr, t_pt ipt, t_ray ray)
+t_vct				ft_setclrpl(t_data data, int *clr, t_pt ipt, t_ray ray)
 {
 	int		clro[3];
 	t_vct	ivct;
 	t_vct	n;
-	double	cs;
 
 	clro[0] = ((t_pl*)data.obj->fig)->clr[0];
 	clro[1] = ((t_pl*)data.obj->fig)->clr[1];
@@ -36,10 +34,12 @@ t_vct			ft_setclrpl(t_data data, int *clr, t_pt ipt, t_ray ray)
 		n.b = n.b * (-1);
 		n.c = n.c * (-1);
 	}
+	if (data.clrtext == 'c')
+		ft_chess(ipt, clr, n.b);
 	return (n);
 }
 
-double			ft_interpl2(t_data data, t_ray ray)
+double				ft_interpl2(t_data data, t_ray ray)
 {
 	t_pl	pl;
 	double	d;
@@ -50,8 +50,8 @@ double			ft_interpl2(t_data data, t_ray ray)
 	cs = (ray.vct.a * pl.n.a) + (ray.vct.b * pl.n.b) + (ray.vct.c * pl.n.c);
 	if (cs == 0)
 		return (cs);
-	d =  (-1) * pl.n.a * pl.pt.x - pl.n.b * pl.pt.y - pl.n.c * pl.pt.z;
-	t = (-d - pl.n.a * ray.pt.x - pl.n.b *ray.pt.y - pl.n.c * ray.pt.z)
+	d = (-1) * pl.n.a * pl.pt.x - pl.n.b * pl.pt.y - pl.n.c * pl.pt.z;
+	t = (-d - pl.n.a * ray.pt.x - pl.n.b * ray.pt.y - pl.n.c * ray.pt.z)
 	/ (pl.n.a * ray.vct.a + pl.n.b * ray.vct.b + pl.n.c * ray.vct.c);
 	if (t < 0)
 		return (t);
@@ -65,7 +65,7 @@ t_h					ft_interpl(t_data data, t_ray ray, int *clr, t_pt *intpt)
 	t_pt	ipt;
 
 	hh.r = 0;
-	t = ft_interpl2(data,ray);
+	t = ft_interpl2(data, ray);
 	if (t <= E)
 		return (hh);
 	ipt.x = ray.pt.x + t * ray.vct.a;
@@ -80,6 +80,7 @@ t_h					ft_interpl(t_data data, t_ray ray, int *clr, t_pt *intpt)
 	}
 	return (hh);
 }
+
 static int			ft_sameplane(t_pl *pl, t_ray lr)
 {
 	t_vct	v;
@@ -106,7 +107,7 @@ int					ft_interlgtpl(t_pl *pl, t_ray lr, t_pt lgto)
 	cs = (lr.vct.a * pl->n.a) + (lr.vct.b * pl->n.b) + (lr.vct.c * pl->n.c);
 	if (cs == 0)
 		return (0);
-	d =  (-1) * pl->n.a * pl->pt.x - pl->n.b * pl->pt.y - pl->n.c * pl->pt.z;
+	d = (-1) * pl->n.a * pl->pt.x - pl->n.b * pl->pt.y - pl->n.c * pl->pt.z;
 	t = (-d - pl->n.a * lr.pt.x - pl->n.b * lr.pt.y - pl->n.c * lr.pt.z)
 	/ (pl->n.a * lr.vct.a + pl->n.b * lr.vct.b + pl->n.c * lr.vct.c);
 	if (t <= 0)

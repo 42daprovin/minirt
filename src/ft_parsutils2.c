@@ -6,13 +6,12 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/10 15:03:07 by daprovin          #+#    #+#             */
-/*   Updated: 2020/03/10 15:49:47 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/06/18 02:29:04 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/libft.h"
 #include "../headers/minirt.h"
-#include "../headers/mlx.h"
 #include <math.h>
 
 int			ft_checkint(char *str)
@@ -36,7 +35,7 @@ int			ft_checkcolor(char *str)
 	int		i;
 
 	if (!(split = ft_split(str, ',')))
-		return (2);
+		ft_errorcheckermalloc();
 	if (ft_strstrlen(split) != 3)
 	{
 		free(split);

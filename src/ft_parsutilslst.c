@@ -1,18 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_parsutils.c                                     :+:      :+:    :+:   */
+/*   ft_parsutilslst.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/07 16:12:16 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/18 08:18:29 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/06/09 18:48:06 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/libft.h"
 #include "../headers/minirt.h"
-#include "../headers/mlx.h"
 
 void		ft_addbackcam(t_cam **dcam, t_cam *cam)
 {
@@ -30,7 +29,6 @@ void		ft_addbackcam(t_cam **dcam, t_cam *cam)
 		list = list->next;
 	cam->back = list;
 	list->next = cam;
-	//list->next->next = NULL;
 }
 
 void		ft_addbacklgt(t_lgt **dlgt, t_lgt *lgt)
@@ -41,6 +39,7 @@ void		ft_addbacklgt(t_lgt **dlgt, t_lgt *lgt)
 	if (!list)
 	{
 		*dlgt = lgt;
+		(*dlgt)->next = NULL;
 		return ;
 	}
 	while (list->next)

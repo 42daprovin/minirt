@@ -6,13 +6,12 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/24 08:41:38 by daprovin          #+#    #+#             */
-/*   Updated: 2020/03/06 10:25:58 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/06/18 02:46:28 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/libft.h"
 #include "../headers/minirt.h"
-#include "../headers/mlx.h"
 #include <math.h>
 
 static double	ft_intersq2(t_data data, t_ray ray)
@@ -31,6 +30,7 @@ static double	ft_intersq2(t_data data, t_ray ray)
 	/ (sq.n.a * ray.vct.a + sq.n.b * ray.vct.b + sq.n.c * ray.vct.c);
 	return (t);
 }
+
 static int		ft_isnotinsq(t_pt ipt, t_sq sq)
 {
 	t_vct	r;
@@ -65,7 +65,6 @@ static t_vct	ft_setclrsq(t_data data, int *clr, t_pt ipt, t_ray ray)
 	int		clro[3];
 	t_vct	ivct;
 	t_vct	n;
-	double	cs;
 
 	clro[0] = ((t_sq*)data.obj->fig)->clr[0];
 	clro[1] = ((t_sq*)data.obj->fig)->clr[1];
@@ -90,6 +89,7 @@ t_h				ft_intersq(t_data data, t_ray ray, int *clr, t_pt *intpt)
 	double	t;
 	t_pt	ipt;
 
+	hh.r = 0;
 	t = ft_intersq2(data, ray);
 	if (t <= E)
 		return (hh);
@@ -106,17 +106,6 @@ t_h				ft_intersq(t_data data, t_ray ray, int *clr, t_pt *intpt)
 		hh.r = 1;
 	}
 	return (hh);
-}
-static int		ft_samesquare(t_sq *sq, t_ray lr)
-{
-	t_vct	v;
-	double	cs;
-
-	v = ft_vctatob(sq->c, lr.pt);
-	cs = ft_dotprod(v, sq->n);
-	if (fabs(cs) < E)
-		return (1);
-	return (0);
 }
 
 int				ft_interlgtsq(t_sq *sq, t_ray lr, t_pt lgto)

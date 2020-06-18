@@ -6,16 +6,15 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 09:09:35 by daprovin          #+#    #+#             */
-/*   Updated: 2020/03/10 02:01:16 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/06/09 19:06:14 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/libft.h"
 #include "../headers/minirt.h"
-#include "../headers/mlx.h"
 #include <math.h>
 
-int			ft_interlgt(t_pt lgto, t_ray lr, t_data *data)
+int				ft_interlgt(t_pt lgto, t_ray lr, t_data *data)
 {
 	t_data	ndata;
 	int		r;
@@ -39,47 +38,12 @@ int			ft_interlgt(t_pt lgto, t_ray lr, t_data *data)
 	return (r);
 }
 
-void		ft_3dshadow(int *clr, double cf[3])
-{
-	int		clrp[3];
-	int		c;
-
-	c = *clr;
-	clrp[0] = *clr >> 16;
-	*clr = c;
-	clrp[1] = (*clr & 65280) >> 8;
-	*clr = c;
-	clrp[2] = *clr & 255;
-	*clr = ((int)(clrp[0] * cf[0]) << 16) | ((int)(clrp[1] * cf[1]) << 8)
-	| (int)(clrp[2] * cf[2]);
-}
-
-int			ft_clr(int clr[3], double spec, int clr2)
-{
-	int		c;
-	int		clrp[3];
-
-	c = clr2;
-	clrp[0] = clr2 >> 16;
-	clr2 = c;
-	clrp[1] = (clr2 & 65280) >> 8;
-	clr2 = c;
-	clrp[2] = clr2 & 255;
-	clr2 = c;
-	c = ((int)(clr[0] * spec + clrp[0] * (1 - spec)) << 16)
-	| ((int)(clr[1] * spec + clrp[1] * (1 - spec)) << 8)
-	| (int)(clr[2] * spec + clrp[2] * (1 - spec));
-	return (c);
-}
-
-void		ft_changecf(double (*cf)[3], t_vct lv, t_vct n, t_data data)//cf = cf[3]
+void			ft_changecf(double (*cf)[3], t_vct lv, t_vct n, t_data data)
 {
 	double	lang;
 	double	ncf[3];
 
 	lang = (lv.a * n.a) + (lv.b * n.b) + (lv.c * n.c);
-//	ncf = (cf + (data.lgt->br * fmax(lang, 0)) > 1) ? 1
-//	: cf + (data.lgt->br * fmax(lang, 0));
 	ncf[0] = ((*cf)[0]
 	+ ((data.lgt->clr[0] * data.lgt->br / 255) * fmax(lang, 0)) > 1) ? 1
 	: (*cf)[0] + ((data.lgt->clr[0] * data.lgt->br / 255) * fmax(lang, 0));
@@ -92,10 +56,10 @@ void		ft_changecf(double (*cf)[3], t_vct lv, t_vct n, t_data data)//cf = cf[3]
 	(*cf)[0] = ncf[0];
 	(*cf)[1] = ncf[1];
 	(*cf)[2] = ncf[2];
-//	return (ncf);
 	return ;
 }
-int			ft_shine(t_ray lr, t_vct n, t_data d, int *clr)
+
+int				ft_shine(t_ray lr, t_vct n, t_data d, int *clr)
 {
 	double	dot;
 	double	len;
@@ -116,6 +80,7 @@ int			ft_shine(t_ray lr, t_vct n, t_data d, int *clr)
 	spec = pow(spec, 10);
 	return (ft_clr(d.lgt->clr, spec, *clr));
 }
+
 static void		ft_newcf(double (*cf)[3], t_algt *algt)
 {
 	(*cf)[0] = algt->clr[0] * algt->br / 255;
@@ -124,16 +89,13 @@ static void		ft_newcf(double (*cf)[3], t_algt *algt)
 	return ;
 }
 
-void		ft_shadding(int *clr, t_vct n, t_pt ip, t_data *data)
+void			ft_shadding(int *clr, t_vct n, t_pt ip, t_data *data)
 {
 	t_data	ndata;
 	t_ray	lr;
 	double	norm;
-//	double	cf;//transformarlo en un double[3], y calcular el coeficiente
-//respectivo a cada color con la transdormacion 255 = max(cf)
 	double	cf[3];
 
-//	cf = data->algt->br;
 	ft_newcf(&cf, data->algt);
 	lr.pt = ip;
 	ndata = *data;
@@ -146,7 +108,6 @@ void		ft_shadding(int *clr, t_vct n, t_pt ip, t_data *data)
 		lr.vct.c = (ndata.lgt->o.z - ip.z) / norm;
 		if (!(ft_interlgt(ndata.lgt->o, lr, data)))
 		{
-			//cf = ft_changecf(cf, lr.vct, n, ndata);
 			ft_changecf(&cf, lr.vct, n, ndata);
 			if (data->spec)
 				*clr = ft_shine(lr, n, ndata, clr);

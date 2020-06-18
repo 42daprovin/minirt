@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 18:54:26 by daprovin          #+#    #+#             */
-/*   Updated: 2020/02/08 14:44:29 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/06/18 02:25:18 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int		ft_checkargs(char *str)
 	int		r;
 
 	if (!(split = ft_split(str, ',')))
-		return (2);
+		ft_errorcheckermalloc();
 	if (ft_strstrlen(split) != 3)
 	{
 		free(split);

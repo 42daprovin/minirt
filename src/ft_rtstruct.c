@@ -6,13 +6,12 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 08:52:47 by daprovin          #+#    #+#             */
-/*   Updated: 2020/03/09 17:55:52 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/06/18 02:48:40 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/libft.h"
 #include "../headers/minirt.h"
-#include "../headers/mlx.h"
 #include <math.h>
 
 t_h			ft_objtype(t_data ndata, t_ray ray, int *clr, t_pt *intpt)
@@ -50,64 +49,48 @@ t_ray		ft_reflexion(t_pt intpt, t_ray ray, t_vct n)
 	ray.pt = intpt;
 	return (ray);
 }
-int			ft_refclr(int clr1, int clr, double crf)
-{
-	int		c;
-	int		clrp[3];
-	int		clr1p[3];
 
-	c = clr;
-	clrp[0] = clr >> 16;
-	clr = c;
-	clrp[1] = (clr & 65280) >> 8;
-	clr = c;
-	clrp[2] = clr & 255;
-	c = clr1;
-	clr1p[0] = clr1 >> 16;
-	clr1 = c;
-	clr1p[1] = (clr1 & 65280) >> 8;
-	clr1 = c;
-	clr1p[2] = clr1 & 255;
-	c = ((int)(clr1p[0] * (1 - crf) + clrp[0] * crf) << 16)
-	| ((int)(clr1p[1] * (1 - crf) + clrp[1] * crf) << 8)
-	| (int)(clr1p[2] * (1 - crf) + clrp[2] * crf);
-	return (c);
-}
-
-int			ft_intersect(t_ray ray, t_data *data, int *clr)
+double		ft_intersect2(t_ray ray, int *clr, t_structsupp *s, t_data *data)
 {
 	t_data	ndata;
-	t_pt	intpt;
-	t_h		h;
 	t_h		h_p;
 	double	rcf;
-	int		clr1;
 
-	h.r = 0;
-	intpt = ray.pt;
 	ndata = *data;
 	rcf = 0;
 	while (ndata.obj)
 	{
-		h_p = ft_objtype(ndata, ray, clr, &intpt);
+		h_p = ft_objtype(ndata, ray, clr, &(s->intpt));
 		if (h_p.r == 1)
 		{
-			h.r = h_p.r;
-			h.n = h_p.n;
+			s->h.r = h_p.r;
+			s->h.n = h_p.n;
 			data->spec = ndata.obj->spec;
 			rcf = ndata.obj->rcf;
 		}
 		ndata.obj = ndata.obj->next;
 	}
-	if (h.r != 0)
-		ft_shadding(clr, h.n, intpt, data);
+	return (rcf);
+}
+
+int			ft_intersect(t_ray ray, t_data *data, int *clr)
+{
+	t_structsupp	s;
+	double			rcf;
+	int				clr1;
+
+	s.h.r = 0;
+	s.intpt = ray.pt;
+	rcf = ft_intersect2(ray, clr, &s, data);
+	if (s.h.r != 0)
+		ft_shadding(clr, s.h.n, s.intpt, data);
 	else
 		*clr = 0;
 	if (rcf != 0 && data->depth < MAX_DEPTH)
 	{
 		clr1 = *clr;
 		data->depth++;
-		ray = ft_reflexion(intpt, ray, h.n);
+		ray = ft_reflexion(s.intpt, ray, s.h.n);
 		ft_intersect(ray, data, clr);
 		*clr = ft_refclr(clr1, *clr, rcf);
 	}
@@ -118,26 +101,25 @@ int			ft_minirt(t_data *data)
 {
 	double	x;
 	double	y;
-	t_ray	ray;
 	int		clr;
+	t_cam	*d;
 
-	x = 0;
-	y = 0;
-	clr = 0;
-	while (y < data->res->y)
+	d = data->cam;
+	while (data->cam)
 	{
-		x = 0;
-		while (x < data->res->x)
+		y = -1;
+		clr = 0;
+		while (y++ < data->res->y)
 		{
-			ray = ft_camrays(x, y, data);
-			data->depth = 0;
-			if (ft_intersect(ray, data, &clr))
-				data->imdt[(int)(y * (data->size_line / 4) + x)] = clr;
-				//mlx_pixel_put(data->mlx, data->w_ptr, x, y, clr);
-			x++;
+			x = -1;
+			while (x++ < data->res->x)
+			{
+				clr = ft_supersampling(x, y, data);
+				data->cam->imdt[(int)(y * (data->size_line / 4) + x)] = clr;
+			}
 		}
-		y++;
+		data->cam = data->cam->next;
 	}
-	mlx_put_image_to_window(data->mlx, data->w_ptr, data->imptr, 0, 0);
+	data->cam = d;
 	return (0);
 }

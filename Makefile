@@ -6,7 +6,7 @@
 #    By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/30 15:35:32 by daprovin          #+#    #+#              #
-#    Updated: 2020/03/10 15:46:32 by daprovin         ###   ########.fr        #
+#    Updated: 2020/06/18 03:37:31 by daprovin         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,22 +33,33 @@ OBJS := \
 	src/trianglelights.o \
 	src/cylinder.o \
 	src/ft_parsutils2.o \
+	src/ft_error_utils.o \
+	src/ft_bmp.o \
+	src/square2.o \
+	src/ft_lights2.o \
+	src/ft_rtutils2.o \
+	src/ft_rtutils3.o \
+	src/supersampling.o \
+	src/ft_parsobjs2.o \
 
 GFLAGS := -Wall -Werror -Wextra
-HEAD := headers/
+HEAD := headers
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
-	gcc -o $(NAME) $(OBJS) src/libft.a libmlx.dylib
+	cd new_libft && make && cd ..
+	gcc -o $(NAME) $(OBJS) new_libft/libft.a mlxlib/libmlx_Linux.a -lXext -lX11 -lm
 
 %.o: %.c
-	gcc -I $(HEAD) -c $< -o $@
+	gcc $(GFLAGS) -I $(HEAD) -c $< -o $@ -lm
 
 clean:
+	cd new_libft && make clean && cd ..
 	rm -f $(OBJS)
 
 fclean: clean
+	cd new_libft && make fclean && cd ..
 	rm -f $(NAME)
 
 re: fclean all

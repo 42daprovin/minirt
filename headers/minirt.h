@@ -6,13 +6,14 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 17:33:39 by daprovin          #+#    #+#             */
-/*   Updated: 2020/03/10 17:50:04 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/06/18 05:09:15 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef MINIRT_H
 # define MINIRT_H
 
+# include "../headers/mlx.h"
 # define SP 1
 # define PL 2
 # define SQ 3
@@ -52,6 +53,8 @@ typedef struct	s_cam
 	t_pt			o;
 	t_vct			n;
 	double			fov;
+	void			*imptr;
+	int				*imdt;
 	struct s_cam	*next;
 	struct s_cam	*back;
 }				t_cam;
@@ -103,9 +106,9 @@ typedef struct	s_cy
 
 typedef struct	s_tr
 {
-	t_pt			A;
-	t_pt			B;
-	t_pt			C;
+	t_pt			a;
+	t_pt			b;
+	t_pt			c;
 	int				clr[3];
 }				t_tr;
 
@@ -130,8 +133,11 @@ typedef struct	s_data
 	void			*imptr;
 	int				*imdt;
 	int				size_line;
+	int				bpp;
 	int				spec;
 	int				depth;
+	int				line;
+	char			clrtext;
 }				t_data;
 
 typedef struct	s_mlximg
@@ -146,6 +152,18 @@ typedef struct	s_h
 	int				r;
 	t_vct			n;
 }				t_h;
+
+typedef struct	s_supp
+{
+	double		h;
+	double		d;
+}				t_supp;
+
+typedef struct	s_structsupp
+{
+	t_pt		intpt;
+	t_h			h;
+}				t_structsupp;
 
 int				ft_strstrlen(char **str);
 double			ft_doubatoi(char *str);
@@ -181,7 +199,7 @@ void			ft_changecf(double (*cf)[3], t_vct lv, t_vct n, t_data data);
 void			ft_shadding(int *clr, t_vct n, t_pt ip, t_data *data);
 int				ft_checklgt(t_pt ipt, t_pt lgto, t_ray lr);
 t_vct			ft_setclrsp(t_data data, int *clr, t_pt intpt);
-int				ft_intersp2(double *h, t_data data, t_ray ray, double *t_co);
+int				ft_intersp2(t_supp *s, t_data data, t_ray ray, double *t_co);
 t_h				ft_intersp(t_data data, t_ray ray, int *clr, t_pt *intpt);
 int				ft_interlgtsp(t_sp *sp, t_ray lr, t_pt lgto);
 t_h				ft_interpl(t_data data, t_ray ray, int *clr, t_pt *intpt);
@@ -208,5 +226,21 @@ int				ft_checkint(char *str);
 int				ft_checkcolor(char *str);
 int				ft_checkcf(char *str);
 void			init_mlx(t_data *data);
+void			ft_errorcheckermalloc(void);
+void			ft_checkerror(int	error, int line);
+void			ft_checkinput(int ac, char **av);
+void			ft_checkdata(t_data *data);
+char			*bmp_filename(char *file, int i);
+void			ft_save_image(t_data d, int ac, char *file);
+void			export_bmp(char *filename, t_data *d);
+void			header_bmp(char **data, t_data *d);
+void			fill_bmp(char **data, t_data *d);
+int				ft_samesquare(t_sq *sq, t_ray lr);
+int				ft_clr(int clr[3], double spec, int clr2);
+int				ft_refclr(int clr1, int clr, double crf);
+int				ft_supersampling(double x, double y, t_data *data);
+void			ft_chess(t_pt ipt, int *clr, double nb);
+int				ft_clrtext(char **split, t_data *data);
+int				ft_cu(char **scu, t_data *data);
 
 #endif

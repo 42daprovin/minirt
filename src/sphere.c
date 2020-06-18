@@ -6,13 +6,12 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 09:18:13 by daprovin          #+#    #+#             */
-/*   Updated: 2020/03/09 14:26:32 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/06/10 00:45:06 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/libft.h"
 #include "../headers/minirt.h"
-#include "../headers/mlx.h"
 #include <math.h>
 
 t_vct		ft_setclrsp(t_data data, int *clr, t_pt intpt)
@@ -29,49 +28,47 @@ t_vct		ft_setclrsp(t_data data, int *clr, t_pt intpt)
 	return (vn);
 }
 
-int			ft_intersp2(double *h, t_data data, t_ray ray, double *t_co)
+int			ft_intersp2(t_supp *s, t_data data, t_ray ray, double *t_co)
 {
 	t_vct	vct;
 
 	vct.a = ((t_sp*)data.obj->fig)->c.x - ray.pt.x;
 	vct.b = ((t_sp*)data.obj->fig)->c.y - ray.pt.y;
 	vct.c = ((t_sp*)data.obj->fig)->c.z - ray.pt.z;
-	*h = sqrt(pow(vct.a, 2) + pow(vct.b, 2) + pow(vct.c, 2));
+	s->h = sqrt(pow(vct.a, 2) + pow(vct.b, 2) + pow(vct.c, 2));
 	*t_co = (ray.vct.a * vct.a) + (ray.vct.b * vct.b) + (ray.vct.c * vct.c);
-	if (*t_co < 0)
+	s->d = sqrt(pow(s->h, 2) - pow(*t_co, 2));
+	if (s->d < 0 || s->d > (((t_sp*)data.obj->fig)->d) / 2)
+		return (1);
+	s->h = *t_co - sqrt(pow(((t_sp*)data.obj->fig)->d / 2, 2) - pow(s->d, 2));
+	if (s->h < E)
+		s->h =
+		*t_co + sqrt(pow(((t_sp*)data.obj->fig)->d / 2, 2) - pow(s->d, 2));
+	if (s->h <= 3 * E)
 		return (1);
 	return (0);
-
 }
 
 t_h			ft_intersp(t_data data, t_ray ray, int *clr, t_pt *intpt)
 {
 	t_pt	ipt;
-	double	h;
 	double	t_co;
-	double	d;
+	t_supp	s;
 	t_h		hh;
 
 	hh.r = 0;
-	ft_intersp2(&h, data, ray, &t_co);
-	d = sqrt(pow(h, 2) - pow(t_co, 2));
-	if (d < 0 || d > (((t_sp*)data.obj->fig)->d) / 2)
+	if (ft_intersp2(&s, data, ray, &t_co))
 		return (hh);
-	h = t_co - sqrt(pow(((t_sp*)data.obj->fig)->d / 2, 2) - pow(d, 2));
-	if (h < E)
-		h = t_co + sqrt(pow(((t_sp*)data.obj->fig)->d / 2, 2) - pow(d, 2));
-	if (h <= 3 * E)
-		return (hh);
-	ipt.x = ray.pt.x + (h * ray.vct.a);
-	ipt.y = ray.pt.y + (h * ray.vct.b);
-	ipt.z = ray.pt.z + (h * ray.vct.c);
+	ipt.x = ray.pt.x + (s.h * ray.vct.a);
+	ipt.y = ray.pt.y + (s.h * ray.vct.b);
+	ipt.z = ray.pt.z + (s.h * ray.vct.c);
 	if (ft_dist(ray.pt, *intpt) == 0
 	|| ft_dist(ray.pt, ipt) < ft_dist(ray.pt, *intpt))
 	{
 		*intpt = ipt;
 		hh.n = ft_setclrsp(data, clr, *intpt);
 		if (fabs(t_co)
-		- fabs(sqrt(pow(((t_sp*)data.obj->fig)->d / 2, 2) - pow(d, 2))) < E)
+		- fabs(sqrt(pow(((t_sp*)data.obj->fig)->d / 2, 2) - pow(s.d, 2))) < E)
 			hh.n = ft_escprod(-1, hh.n);
 		hh.r = 1;
 	}

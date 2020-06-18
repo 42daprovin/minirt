@@ -6,13 +6,12 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 18:55:58 by daprovin          #+#    #+#             */
-/*   Updated: 2020/03/12 17:52:30 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/06/18 02:24:22 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/libft.h"
 #include "../headers/minirt.h"
-#include "../headers/mlx.h"
 #include <math.h>
 
 static int	ft_slcdata1(char **split, t_data *data)
@@ -27,6 +26,8 @@ static int	ft_slcdata1(char **split, t_data *data)
 		r = ft_cam(split, data);
 	else if (**split == 'l')
 		r = ft_lgt(split, data);
+	else if (**split == 'T')
+		r = ft_clrtext(split, data);
 	else
 		return (1);
 	return (r);
@@ -46,6 +47,8 @@ static int	ft_slcdata2(char **split, t_data *data)
 		r = ft_cy(split, data);
 	else if (**split == 't' && *((*split) + 1) == 'r')
 		r = ft_tr(split, data);
+	else if (**split == 'c' && *((*split) + 1) == 'u')
+		r = ft_cu(split, data);
 	else
 		return (1);
 	return (r);
@@ -57,7 +60,7 @@ static int	ft_selectdata(char *line, t_data *data)
 	int		r;
 
 	if (!(split = ft_split(line, ' ')))
-		return (2);
+		ft_errorcheckermalloc();
 	if (!(*split))
 	{
 		free(split);
@@ -80,6 +83,8 @@ static void	ft_initdata(t_data *data)
 	data->res = NULL;
 	data->algt = NULL;
 	data->spec = 0;
+	data->line = 1;
+	data->clrtext = 'n';
 }
 
 int			main(int ac, char **av)
@@ -89,21 +94,24 @@ int			main(int ac, char **av)
 	t_data		data;
 	int			r;
 
-//	if (r = ft_checkinput(ac, av)
+	ft_checkinput(ac, av);
 	ft_initdata(&data);
 	fd = open(av[1], O_RDONLY);
-//	if (fd < 0)
-//		ft_error_destructor(-1);
+	if (fd < 3)
+		ft_errorcheckermalloc();
 	while (gnl(fd, &line) > 0)
 	{
 		if ((r = ft_selectdata(line, &data)) > 0)
-			{}//ft_error_destructor(r);
+			ft_checkerror(r, data.line);
 		free(line);
+		data.line++;
 	}
+	ft_checkdata(&data);
 	init_mlx(&data);
 	ft_minirt(&data);
-	mlx_hook(data.w_ptr, 17, 0, ft_close, (void *)0);
-	mlx_hook(data.w_ptr, 2, 0, ft_changecam, &data);
+	ft_save_image(data, ac, av[1]);
+	mlx_hook(data.w_ptr, 2, (1L << 0), ft_changecam, &data);
+	mlx_hook(data.w_ptr, 17, (1L << 17), ft_close, (void *)0);
 	mlx_loop(data.mlx);
 	return (0);
 }

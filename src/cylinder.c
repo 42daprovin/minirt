@@ -6,13 +6,12 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/09 09:44:14 by daprovin          #+#    #+#             */
-/*   Updated: 2020/03/10 17:42:14 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/06/11 23:41:30 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/libft.h"
 #include "../headers/minirt.h"
-#include "../headers/mlx.h"
 #include <math.h>
 
 void		ft_intercy2(t_cy cy, t_ray ray, double *t0, double *t1)
@@ -51,7 +50,7 @@ double		distpltopt(t_cy cy, t_pt *ipt, double (*t)[3], t_ray ray)
 	d = (-1) * cy.n.a * cy.pt.x - cy.n.b * cy.pt.y - cy.n.c * cy.pt.z;
 	h = fabs(cy.n.a * ipt->x + cy.n.b * ipt->y + cy.n.c * ipt->z + d)
 	/ sqrt(pow(cy.n.a, 2) + pow(cy.n.b, 2) + pow(cy.n.c, 2));
-	if (h > cy.d / 2)
+	if (h > cy.h / 2)
 		(*t)[2] = fmax((*t)[0], (*t)[1]);
 	else
 		return (0);
@@ -61,7 +60,7 @@ double		distpltopt(t_cy cy, t_pt *ipt, double (*t)[3], t_ray ray)
 	d = (-1) * cy.n.a * cy.pt.x - cy.n.b * cy.pt.y - cy.n.c * cy.pt.z;
 	h = fabs(cy.n.a * ipt->x + cy.n.b * ipt->y + cy.n.c * ipt->z + d)
 	/ sqrt(pow(cy.n.a, 2) + pow(cy.n.b, 2) + pow(cy.n.c, 2));
-	if (h > cy.d / 2)
+	if (h > cy.h / 2)
 		return (1);
 	return (0);
 }

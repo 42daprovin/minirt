@@ -1,18 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   triangle.c                                         :+:      :+:    :+:   */
+/*   tmp_triangle.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/05 17:24:31 by daprovin          #+#    #+#             */
-/*   Updated: 2020/03/10 17:37:26 by daprovin         ###   ########.fr       */
+/*   Updated: 2020/06/18 05:14:34 by daprovin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/libft.h"
 #include "../headers/minirt.h"
-#include "../headers/mlx.h"
 #include <math.h>
 
 double			ft_intertr2(t_tr tr, t_ray ray)
@@ -22,39 +21,39 @@ double			ft_intertr2(t_tr tr, t_ray ray)
 	double	t;
 	t_vct	n;
 
-	n = ft_crossprod(ft_vctatob(tr.A, tr.B), ft_vctatob(tr.A, tr.C));
+	n = ft_crossprod(ft_vctatob(tr.a, tr.b), ft_vctatob(tr.a, tr.c));
 	n = ft_normalize(n);
 	cs = ft_dotprod(ray.vct, n);
 	if (cs == 0)
 		return (cs);
-	d = (-1) * n.a * tr.A.x - n.b * tr.A.y - n.c * tr.A.z;
+	d = (-1) * n.a * tr.a.x - n.b * tr.a.y - n.c * tr.a.z;
 	t = (-d - n.a * ray.pt.x - n.b * ray.pt.y - n.c * ray.pt.z)
 	/ (n.a * ray.vct.a + n.b * ray.vct.b + n.c * ray.vct.c);
 	return (t);
 }
 
-int			p_is_outside_tr(t_tr tr, t_pt p)
+int				p_is_outside_tr(t_tr tr, t_pt p)
 {
 	t_vct	vp;
 	t_vct	l;
 	t_vct	l2;
 	double	cs;
 
-	vp = ft_vctatob(tr.A, p);
-	l = ft_vctatob(tr.A, tr.B);
-	l2 = ft_vctatob(tr.A, tr.C);
+	vp = ft_vctatob(tr.a, p);
+	l = ft_vctatob(tr.a, tr.b);
+	l2 = ft_vctatob(tr.a, tr.c);
 	cs = ft_dotprod(ft_crossprod(l, vp), ft_crossprod(l, l2));
 	if (cs < 0)
 		return (1);
-	vp = ft_vctatob(tr.B, p);
-	l = ft_vctatob(tr.B, tr.C);
-	l2 = ft_vctatob(tr.B, tr.A);
+	vp = ft_vctatob(tr.b, p);
+	l = ft_vctatob(tr.b, tr.c);
+	l2 = ft_vctatob(tr.b, tr.a);
 	cs = ft_dotprod(ft_crossprod(l, vp), ft_crossprod(l, l2));
 	if (cs < 0)
 		return (1);
-	vp = ft_vctatob(tr.C, p);
-	l = ft_vctatob(tr.C, tr.A);
-	l2 = ft_vctatob(tr.C, tr.B);
+	vp = ft_vctatob(tr.c, p);
+	l = ft_vctatob(tr.c, tr.a);
+	l2 = ft_vctatob(tr.c, tr.b);
 	cs = ft_dotprod(ft_crossprod(l, vp), ft_crossprod(l, l2));
 	if (cs < 0)
 		return (1);
@@ -66,7 +65,6 @@ t_vct			ft_setclrtr(t_data data, int *clr, t_pt ipt, t_ray ray)
 	int		clro[3];
 	t_vct	ivct;
 	t_vct	n;
-	double	cs;
 	t_tr	tr;
 
 	tr = *((t_tr*)data.obj->fig);
@@ -75,7 +73,7 @@ t_vct			ft_setclrtr(t_data data, int *clr, t_pt ipt, t_ray ray)
 	clro[2] = ((t_tr*)data.obj->fig)->clr[2];
 	*clr = (clro[0] << 16) | (clro[1] << 8) | clro[2];
 	ivct = ft_vctatob(ipt, ray.pt);
-	n = ft_crossprod(ft_vctatob(tr.A, tr.B), ft_vctatob(tr.A, tr.C));
+	n = ft_crossprod(ft_vctatob(tr.a, tr.b), ft_vctatob(tr.a, tr.c));
 	n = ft_normalize(n);
 	if (ft_dotprod(ivct, n) < 0)
 	{

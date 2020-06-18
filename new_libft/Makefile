@@ -76,7 +76,7 @@ OBJB := \
 	ft_lstmap_bonus.o \
 
 GFLAGS := -Wall -Werror -Wextra
-HEAD := libft.h
+HEAD := headers
 
 all: $(NAME)
 
