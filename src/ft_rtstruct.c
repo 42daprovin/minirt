@@ -6,13 +6,15 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 08:52:47 by daprovin          #+#    #+#             */
-/*   Updated: 2020/06/18 02:48:40 by daprovin         ###   ########.fr       */
+/*   Updated: 2021/11/05 03:50:37 by david            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../headers/libft.h"
 #include "../headers/minirt.h"
 #include <math.h>
+
+pthread_mutex_t	mut;
 
 t_h			ft_objtype(t_data ndata, t_ray ray, int *clr, t_pt *intpt)
 {
@@ -73,7 +75,7 @@ double		ft_intersect2(t_ray ray, int *clr, t_structsupp *s, t_data *data)
 	return (rcf);
 }
 
-int			ft_intersect(t_ray ray, t_data *data, int *clr)
+int			ft_intersect(t_ray ray, t_data *data, int *clr, int *depth)
 {
 	t_structsupp	s;
 	double			rcf;
@@ -86,37 +88,77 @@ int			ft_intersect(t_ray ray, t_data *data, int *clr)
 		ft_shadding(clr, s.h.n, s.intpt, data);
 	else
 		*clr = 0;
-	if (rcf != 0 && data->depth < MAX_DEPTH)
+	if (rcf != 0 && *depth < MAX_DEPTH)
 	{
 		clr1 = *clr;
-		data->depth++;
+		/* data->depth++; */
+		(*depth)++;
 		ray = ft_reflexion(s.intpt, ray, s.h.n);
-		ft_intersect(ray, data, clr);
+		ft_intersect(ray, data, clr, depth);
 		*clr = ft_refclr(clr1, *clr, rcf);
 	}
 	return (1);
 }
 
+void		*cam_thread(void *v_thread)
+{
+	t_thread 	*thread;
+	double			initx;
+	double		inity;
+	double		endx;
+	double		endy;
+	double			x;
+	double			y;
+	int			clr;
+
+	thread = (t_thread *)v_thread;
+	initx = thread->data->res->x / N_THREADS * thread->id;
+	if (thread->id == N_THREADS - 1)
+		endx = thread->data->res->x;
+	else
+		endx = thread->data->res->x / N_THREADS * (thread->id + 1);
+	inity = 0;
+	endy = thread->data->res->y;
+	y = inity - 1;
+	clr = 0;
+	while (y++ < endy - 1)
+	{
+		x = initx - 1;
+		while (x++ < endx -1)
+		{
+			clr = ft_supersampling(x, y, thread->data);
+			thread->data->cam->imdt[(int)(y * (thread->data->size_line / 4) + x)] = clr;
+		}
+	}
+
+	return (NULL);
+}
+
 int			ft_minirt(t_data *data)
 {
-	double	x;
-	double	y;
-	int		clr;
-	t_cam	*d;
+	t_cam			*d;
+	int				i;
+	t_thread		*thread;
 
+	thread = (t_thread *)malloc(sizeof(t_thread) * N_THREADS);
 	d = data->cam;
+	pthread_mutex_init(&mut, NULL);
+
 	while (data->cam)
 	{
-		y = -1;
-		clr = 0;
-		while (y++ < data->res->y)
+		i = 0;
+		while (i < N_THREADS)
 		{
-			x = -1;
-			while (x++ < data->res->x)
-			{
-				clr = ft_supersampling(x, y, data);
-				data->cam->imdt[(int)(y * (data->size_line / 4) + x)] = clr;
-			}
+			thread[i].data = data;
+			thread[i].id = i; 
+			pthread_create(&(thread[i].t_id), NULL, cam_thread, (void *)(&thread[i]));
+			i++;
+		}
+		i = 0;
+		while (i < N_THREADS)
+		{
+			pthread_join(thread[i].t_id, NULL);
+			i++;
 		}
 		data->cam = data->cam->next;
 	}

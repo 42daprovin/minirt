@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 08:46:12 by daprovin          #+#    #+#             */
-/*   Updated: 2020/06/11 03:08:12 by daprovin         ###   ########.fr       */
+/*   Updated: 2021/11/05 03:34:18 by david            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,7 +80,7 @@ t_ray		ft_rotray(t_ray ray, t_data *data)
 	return (rray);
 }
 
-t_ray		ft_camrays(double x, double y, t_data *data)
+t_ray		ft_camrays(double x, double y, t_data *data, int *depth)
 {
 	t_pt	pt;
 	double	norm;
@@ -99,6 +99,6 @@ t_ray		ft_camrays(double x, double y, t_data *data)
 	ray.pt.y = 0;
 	ray.pt.z = 0;
 	ray = ft_rotray(ray, data);
-	data->depth = 0;
+	*depth = 0;
 	return (ray);
 }

@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 17:33:39 by daprovin          #+#    #+#             */
-/*   Updated: 2020/06/18 05:09:15 by daprovin         ###   ########.fr       */
+/*   Updated: 2021/11/05 03:49:19 by david            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define MINIRT_H
 
 # include "../headers/mlx.h"
+# include <pthread.h>
 # define SP 1
 # define PL 2
 # define SQ 3
@@ -21,6 +22,7 @@
 # define TR 5
 # define E 1e-11
 # define MAX_DEPTH 3
+# define N_THREADS 8
 
 typedef struct	s_pt
 {
@@ -138,7 +140,15 @@ typedef struct	s_data
 	int				depth;
 	int				line;
 	char			clrtext;
+	
 }				t_data;
+
+typedef struct s_thread
+{
+	t_data		*data;
+	int			id;
+	pthread_t	t_id;
+}				t_thread;
 
 typedef struct	s_mlximg
 {
@@ -189,9 +199,9 @@ int				ft_close(void);
 t_ray			ft_rotx(t_ray ray, t_data *data, double ct);
 t_ray			ft_roty(t_ray ray, t_data *data, double ca);
 t_ray			ft_rotray(t_ray ray, t_data *data);
-t_ray			ft_camrays(double x, double y, t_data *data);
+t_ray			ft_camrays(double x, double y, t_data *data, int *depth);
 t_h				ft_objtype(t_data ndata, t_ray ray, int *clr, t_pt *intpt);
-int				ft_intersect(t_ray ray, t_data *data, int *clr);
+int				ft_intersect(t_ray ray, t_data *data, int *clr, int *depth);
 int				ft_minirt(t_data *data);
 int				ft_interlgt(t_pt lgto, t_ray lr, t_data *data);
 void			ft_3dshadow(int *clr, double cf[3]);

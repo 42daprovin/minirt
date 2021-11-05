@@ -6,7 +6,7 @@
 #    By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2020/01/30 15:35:32 by daprovin          #+#    #+#              #
-#    Updated: 2020/06/18 03:37:31 by daprovin         ###   ########.fr        #
+#    Updated: 2021/11/05 01:48:22 by david            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -49,7 +49,7 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	cd new_libft && make && cd ..
-	gcc -o $(NAME) $(OBJS) new_libft/libft.a mlxlib/libmlx_Linux.a -lXext -lX11 -lm
+	gcc -o $(NAME) $(OBJS) $(GFLAGS) new_libft/libft.a mlxlib/libmlx_Linux.a -lXext -lX11 -lm -lpthread
 
 %.o: %.c
 	gcc $(GFLAGS) -I $(HEAD) -c $< -o $@ -lm
