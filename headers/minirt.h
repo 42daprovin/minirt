@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/22 17:33:39 by daprovin          #+#    #+#             */
-/*   Updated: 2021/11/05 03:49:19 by david            ###   ########.fr       */
+/*   Updated: 2021/11/07 23:12:03 by david            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -201,12 +201,12 @@ t_ray			ft_roty(t_ray ray, t_data *data, double ca);
 t_ray			ft_rotray(t_ray ray, t_data *data);
 t_ray			ft_camrays(double x, double y, t_data *data, int *depth);
 t_h				ft_objtype(t_data ndata, t_ray ray, int *clr, t_pt *intpt);
-int				ft_intersect(t_ray ray, t_data *data, int *clr, int *depth);
+int				ft_intersect(t_ray ray, t_data *data, int *clr, int *depth, int *spec);
 int				ft_minirt(t_data *data);
 int				ft_interlgt(t_pt lgto, t_ray lr, t_data *data);
 void			ft_3dshadow(int *clr, double cf[3]);
 void			ft_changecf(double (*cf)[3], t_vct lv, t_vct n, t_data data);
-void			ft_shadding(int *clr, t_vct n, t_pt ip, t_data *data);
+void			ft_shadding(int *clr, t_vct n, t_pt ip, t_data *data, int spec);
 int				ft_checklgt(t_pt ipt, t_pt lgto, t_ray lr);
 t_vct			ft_setclrsp(t_data data, int *clr, t_pt intpt);
 int				ft_intersp2(t_supp *s, t_data data, t_ray ray, double *t_co);

@@ -6,7 +6,7 @@
 /*   By: daprovin <daprovin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/14 09:09:35 by daprovin          #+#    #+#             */
-/*   Updated: 2020/06/09 19:06:14 by daprovin         ###   ########.fr       */
+/*   Updated: 2021/11/07 23:10:04 by david            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ static void		ft_newcf(double (*cf)[3], t_algt *algt)
 	return ;
 }
 
-void			ft_shadding(int *clr, t_vct n, t_pt ip, t_data *data)
+void			ft_shadding(int *clr, t_vct n, t_pt ip, t_data *data, int data_spec)
 {
 	t_data	ndata;
 	t_ray	lr;
@@ -109,7 +109,7 @@ void			ft_shadding(int *clr, t_vct n, t_pt ip, t_data *data)
 		if (!(ft_interlgt(ndata.lgt->o, lr, data)))
 		{
 			ft_changecf(&cf, lr.vct, n, ndata);
-			if (data->spec)
+			if (data_spec)
 				*clr = ft_shine(lr, n, ndata, clr);
 		}
 		ndata.lgt = ndata.lgt->next;

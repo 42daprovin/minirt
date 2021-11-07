@@ -6,7 +6,7 @@
 /*   By: daprovin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/06/10 23:21:20 by daprovin          #+#    #+#             */
-/*   Updated: 2021/11/05 03:33:19 by david            ###   ########.fr       */
+/*   Updated: 2021/11/07 23:15:07 by david            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int		ft_supersampling(double x, double y, t_data *data)
 	int		clr[4];
 	double	k[2];
 	int		depth;
+	int		spec = 0;
 
 	k[0] = 0.25;
 	k[1] = 0.75;
@@ -62,7 +63,7 @@ int		ft_supersampling(double x, double y, t_data *data)
 		{
 			clr[i] = 0;
 			ft_intersect(ft_camrays(x + k[c[0]], y + k[c[1]], data, &depth),
-			data, &clr[i], &depth);
+			data, &clr[i], &depth, &spec);
 			i++;
 			c[1]++;
 		}
